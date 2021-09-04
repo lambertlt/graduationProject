@@ -5,4 +5,12 @@
 
 后端框架：springBoot + mybatis Plus
 
+目录结构：
+
+```shell
+.
+├── README.md 
+├── appBackend  后端项目文件夹
+└── appWeb			前端项目文件夹
+```
 
