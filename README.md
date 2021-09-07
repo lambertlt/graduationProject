@@ -3,7 +3,7 @@
 
 前端框架：vue-element-admin
 
-后端框架：springBoot + mybatis Plus
+后端框架：springBoot + spring security + mybatis Plus
 
 目录结构：
 
