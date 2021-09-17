@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.PrintWriter;
@@ -53,8 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("admin")
                 .antMatchers("/user/**").hasRole("user")
-                .antMatchers("/tourist/**").hasRole("tourist")
-                .anyRequest().authenticated() // 任何接口都需要拦截验证权限
+//                .antMatchers("/tourist/**").hasRole("tourist")
+//                .anyRequest().authenticated() // 任何接口都需要拦截验证权限
                 .and()
                 .rememberMe()
                 // 记住我

@@ -87,13 +87,13 @@ public class ClassifyController {
      * @title 查找全部分类
      * @description 查找全部分类
      * @method get
-     * @url /admin/classify/findAll
+     * @url /tourist/classify/findAll
      * @return_param status int 状态码
      * @return_param data String 数据
      * @remark null
      * @number null
      */
-    @GetMapping("/admin/classify/findAll")
+    @GetMapping("/tourist/classify/findAll")
     public void findAll(HttpServletResponse resp) throws IOException {
         Message message = classifyService.findAll();
         message.returnJson(resp);

@@ -14,7 +14,7 @@ url="https://www.showdoc.com.cn/server/?s=/api/open/fromComments" #同步到的u
 if [[ -z "$1" ]] || [[ ! -d "$1" ]] ; then #目录判断，如果$1不是目录或者是空，则使用当前目录
 	curren_dir=$(dirname $(readlink -f $0))
 else
-	curren_dir=$(cd ./src/main/java/com/lambert/app/controller/; pwd)
+	curren_dir=$(cd /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/controller/; pwd)
 #	curren_dir=$(cd $1; pwd)
 fi
 #echo "$curren_dir" 
