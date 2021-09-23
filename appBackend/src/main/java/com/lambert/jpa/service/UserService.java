@@ -62,18 +62,24 @@ public class UserService implements UserDetailsService {
         Message message = null;
         if (user.getId() == null) {
             // 用户id为空，表明为创建用户
-            User user1 = user.createUser();
-            user1.setId(-1L);
-            user1.setUsername(user.getUsername());
-            user1.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            Role role = roleMapper.getById(2L);
-            // 默认权限为用户
-            List<Role> rs1 = new ArrayList<>();
-            rs1.add(role);
-            user1.setRoles(rs1);
-            user1.setPower(2L);
-            User user2 = userMapper.save(user1);
-            message = new Message(true, 200, "1", user2);
+            try {
+                loadUserByUsername(user.getUsername());
+                message = new Message(false, 400, "用户名已存在", "");
+                return message;
+            } catch (Exception e) {
+                User user1 = user.createUser();
+                user1.setId(-1L);
+                user1.setUsername(user.getUsername());
+                user1.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+                Role role = roleMapper.getById(2L);
+                // 默认权限为用户
+                List<Role> rs1 = new ArrayList<>();
+                rs1.add(role);
+                user1.setRoles(rs1);
+                user1.setPower(2L);
+                User user2 = userMapper.save(user1);
+                message = new Message(true, 200, "1", user2);
+            }
         } else if (user.getPassword() == null) {
             // id不为空，用户密码为空，表明修改权限
             try {

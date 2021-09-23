@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/tourist/file")
+@RequestMapping("/file")
 public class FileRestController {
     private final NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler;
 
@@ -24,16 +24,16 @@ public class FileRestController {
      * showdoc
      *
      * @param 'path' 必选 String 媒体地址
-     * @return {"status":200,"data":{"id":"1",}}
+     * @return {}
      * @catalog 音频接口
      * @title 播放
-     * @description 播放视频
+     * @description 播放权限：任意；播放视频或音频
      * @method get
-     * @url /tourist/file
+     * @url /file/video/player
      * @remark
      * @number
      */
-    @GetMapping("/video")
+    @GetMapping("/video/player")
     public String videoPreview(HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        String path = request.getParameter("path");
 //        /Users/lambert/IdeaProjects/app/media/mp4/video_20210802_165149.mp4

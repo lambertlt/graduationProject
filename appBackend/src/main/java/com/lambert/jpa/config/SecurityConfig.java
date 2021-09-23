@@ -52,11 +52,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 //                .antMatchers("/admin/**").hasRole("admin")
 //                .antMatchers("/user/**").hasRole("user")
+                .antMatchers("/identity/delete", "/classify/create", "/classify/delete", "/classify/update").hasRole("admin")
+                .antMatchers("/identity/detail", "/identity/update").hasRole("user")
+                .antMatchers("/identity/create", "/classify/findAll").permitAll()
 //                .antMatchers("/tourist/**").hasRole("tourist")
-//                .anyRequest().authenticated() // 任何接口都需要拦截验证权限
+                .anyRequest().authenticated() // 任何接口都需要拦截验证权限
                 .and()
                 .rememberMe()
                 // 记住我
+                .tokenValiditySeconds(Math.round(60 * 60 * 5)) // 5min内记住密码
                 .key("lambert")
                 // 密匙
                 .and()
@@ -99,8 +103,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint((req, resp, authException) -> {
-                    resp.setContentType("application/json;charset=UTF-8");
-                    PrintWriter out = resp.getWriter();
+                            resp.setContentType("application/json;charset=UTF-8");
+                            PrintWriter out = resp.getWriter();
                             out.write("尚未登录，请先登录");
                             out.flush();
                             out.close();
