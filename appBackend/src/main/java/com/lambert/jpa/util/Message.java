@@ -1,6 +1,5 @@
 package com.lambert.jpa.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
@@ -8,42 +7,58 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 
 @Data
 public class Message {
+    Boolean success;
     Integer status;
-    String error;
+    String message;
     String data;
+    List listData;
+    Object objectData;
 
     public Message() {
     }
 
-    public Message(int status, String data) {
+    public Message(Boolean success, int status, String message, String data) {
         // 请求成功，返回data对象
         this.status = status;
+        this.success = success;
+        this.message = message;
         this.data = data;
     }
 
-    public Message(int status, String error, String data) {
+    public Message(Boolean success, int status, String message, List listData) {
         // 请求成功，返回data对象
         this.status = status;
-        this.error = error;
-        this.data = data;
+        this.success = success;
+        this.message = message;
+        this.listData = listData;
     }
 
+    public Message(Boolean success, int status, String message, Object objectData) {
+        // 请求成功，返回data对象
+        this.status = status;
+        this.success = success;
+        this.message = message;
+        this.objectData = objectData;
+    }
 
     public void returnJson(HttpServletResponse resp) throws IOException {
+        resp.setContentType("application/json;charset=utf-8");
         PrintWriter out = resp.getWriter();
         HashMap hashMap = new HashMap();
-        if (this.status == 200) {
-            hashMap.put("status", 200);
+        hashMap.put("success", this.success);
+        hashMap.put("status", this.status);
+        hashMap.put("message", this.message);
+        if (this.listData != null)
+            hashMap.put("data", this.listData);
+        else if (this.objectData != null)
+            hashMap.put("data", this.objectData);
+        else
             hashMap.put("data", this.data);
-            out.write(new ObjectMapper().writeValueAsString(hashMap));
-        } else if (this.status == 400) {
-            hashMap.put("status", 400);
-            hashMap.put("error", this.error);
-            out.write(new ObjectMapper().writeValueAsString(hashMap));
-        }
+        out.write(new ObjectMapper().writeValueAsString(hashMap));
         out.flush();
         out.close();
     }

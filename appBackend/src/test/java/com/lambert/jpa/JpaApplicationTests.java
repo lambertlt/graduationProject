@@ -23,7 +23,10 @@ class JpaApplicationTests {
 
     @Test
     void contextLoads() {
-//        userService.getUserDetail("", 1L);
+        User user = new User();
+        user.setId(3L);
+        user.setPower(1L);
+        userService.save(user);
     }
 
 }

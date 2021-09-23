@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
 
 @RestController
 
@@ -20,7 +21,7 @@ public class UserController {
      *
      * @param id       可选 Long 用户id
      * @param username 可选 String 用户名
-     * @return {"status":200,"data":{"id":"1","username":"12154545"}}
+     * @return {"status":200,"data":{"data":{"id":1,"power":1,"username":"lambert","password":"********","accountNonExpired":true,"accountNonLocked":true,"credentialsNonExpired":true,"enabled":true,"roles":[{"id":1,"name":"ROLE_admin","nameZh":"管理员"}],"authorities":[{"authority":"ROLE_admin"}]},"success":true,"message":"","status":200}}
      * @catalog 用户接口
      * @title 用户详情
      * @description 通过id或username查找用户详细信息
@@ -42,11 +43,10 @@ public class UserController {
      *
      * @param "username" 必选 String 用户名
      * @param "password" 必选 String 密码
-     * @param "power"    必选 int 权限（1-admin，2-user，3-tourist）
-     * @return {"status":200,"data":{"id":"1","username":"12154545"}}
+     * @return {"status":200,"data":{"data":{"id":1,"power":1,"username":"lambert","password":"********","accountNonExpired":true,"accountNonLocked":true,"credentialsNonExpired":true,"enabled":true,"roles":[{"id":1,"name":"ROLE_admin","nameZh":"管理员"}],"authorities":[{"authority":"ROLE_admin"}]},"success":true,"message":"","status":200}}
      * @catalog 用户接口
      * @title 创建用户
-     * @description 传入用户名、密码、权利即可创建用户
+     * @description 传入用户名、密码、即可创建用户,权限默认为 user
      * @method post
      * @url /tourist/identity/create
      * @return_param status int 状态码
@@ -55,7 +55,7 @@ public class UserController {
      * @number null
      */
     @PostMapping("/tourist/identity/create")
-    public void create(@RequestBody User user,HttpServletResponse resp) throws IOException {
+    public void create(@RequestBody User user, HttpServletResponse resp) throws IOException {
         Message message = userService.save(user);
         message.returnJson(resp);
     }
@@ -65,8 +65,8 @@ public class UserController {
      *
      * @param "id"       必选 Long 用户id
      * @param "password" 可选 String 密码
-     * @param "power"    可选 int 用户的权限
-     * @return {"status":200,"data":{"id":"1","username":"12154545"}}
+     * @param "power"    可选 Long 用户的权限 1-admin 或 2-user
+     * @return {"status":200,"data":{"data":"","success":true,"message":"修改成功","status":200}}
      * @catalog 用户接口
      * @title 修改用户权限或密码
      * @description 传入用户id既可修改密码或权利，二者必选一
@@ -78,8 +78,9 @@ public class UserController {
      * @number null
      */
     @PostMapping("/user/identity/update")
-    public void update(@RequestBody User user,HttpServletResponse resp) throws IOException {
+    public void update(@RequestBody User user, HttpServletResponse resp, Principal principal) throws IOException {
         Message message = userService.save(user);
+        System.out.println(principal + "," + principal.getName());
         message.returnJson(resp);
     }
 
@@ -87,7 +88,7 @@ public class UserController {
      * showdoc
      *
      * @param "id" 可选 Long 用户id
-     * @return {"status":200,"data":{"id":"1","username":"12154545"}}
+     * @return {"status":200,"data":{"data":"","success":true,"message":"删除成功","status":200}}
      * @catalog 用户接口
      * @title 删除用户
      * @description 通过id删除用户
@@ -99,7 +100,7 @@ public class UserController {
      * @number null
      */
     @GetMapping("/admin/identity/delete")
-    public void update(Long id,HttpServletResponse resp) throws IOException {
+    public void delete(Long id, HttpServletResponse resp) throws IOException {
         Message message = userService.delete(id);
         message.returnJson(resp);
     }

@@ -19,7 +19,7 @@ public class ClassifyController {
      * showdoc
      *
      * @param "name" 必选 String 标签名
-     * @return {"status":200,"data":{"id":"1","username":"12154545"}}
+     * @return {"status":200,"data":{"data":{"id":10,"name":"jjjj"},"success":true,"message":"","status":200}}
      * @catalog 分类接口
      * @title 创建分类
      * @description 创建一个分类
@@ -40,7 +40,7 @@ public class ClassifyController {
      * showdoc
      *
      * @param "id" 必选 Long 标签id
-     * @return {"status":200,"data":{"id":"1","username":"12154545"}}
+     * @return {"status":200,"data":{"data":"","success":true,"message":"删除成功","status":200}}
      * @catalog 分类接口
      * @title 删除分类
      * @description 删除一个分类
@@ -62,7 +62,7 @@ public class ClassifyController {
      *
      * @param "id"   必选 Long 标签id
      * @param "name" 必选 String 标签名
-     * @return {"status":200,"data":{"id":"1","username":"12154545"}}
+     * @return {"status":200,"data":{"data":{"id":1,"name":"幼000儿"},"success":true,"message":"","status":200}}
      * @catalog 分类接口
      * @title 修改分类
      * @description 修改一个分类
@@ -82,7 +82,7 @@ public class ClassifyController {
     /**
      * showdoc
      *
-     * @return {"status":200,"data":{"id":"1","username":"12154545"}}
+     * @return {"status":200,"data":{"data":[{"id":1,"name":"幼000儿"},{"id":5,"name":"jjjj"}],"success":true,"message":"","status":200}}
      * @catalog 分类接口
      * @title 查找全部分类
      * @description 查找全部分类

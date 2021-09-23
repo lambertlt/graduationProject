@@ -18,15 +18,24 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long power;
     private String username;
     private String password;
-    private Integer power;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Role> roles;
+
+    public static User createUser() {
+        User user = new User();
+        user.setEnabled(true);
+        user.setCredentialsNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setAccountNonExpired(true);
+        return user;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

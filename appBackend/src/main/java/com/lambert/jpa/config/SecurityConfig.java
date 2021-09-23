@@ -50,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/admin/**").hasRole("admin")
-                .antMatchers("/user/**").hasRole("user")
+//                .antMatchers("/admin/**").hasRole("admin")
+//                .antMatchers("/user/**").hasRole("user")
 //                .antMatchers("/tourist/**").hasRole("tourist")
 //                .anyRequest().authenticated() // 任何接口都需要拦截验证权限
                 .and()
@@ -68,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .loginProcessingUrl("/doLogin") // 配置之后 /doLogin为默认登陆接口
 //                .defaultSuccessUrl("/hello") // 配置之后会重定向到这个接口，并会记录登陆前的url，登陆成功后会跳回之前的url，设置boolean值为true，将会不记录url
                 .successHandler((req, resp, authentication) -> {
-                    System.out.println(authentication + "-------");
+                    resp.setContentType("application/json;charset=UTF-8");
                     Object principal = authentication.getPrincipal();
                     PrintWriter out = resp.getWriter();
                     out.write(new ObjectMapper().writeValueAsString(principal));
@@ -76,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     out.close();
                 })
                 .failureHandler((req, resp, e) -> {
+                    resp.setContentType("application/json;charset=UTF-8");
                     PrintWriter out = resp.getWriter();
                     out.write(e.getMessage());
                     out.flush();
@@ -87,6 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 // 访问 logout 退出登陆状态
                 .logoutSuccessHandler((req, resp, authentication) -> {
+                    resp.setContentType("application/json;charset=UTF-8");
                     PrintWriter out = resp.getWriter();
                     out.write("注销成功");
                     out.flush();
@@ -97,7 +99,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint((req, resp, authException) -> {
-                            PrintWriter out = resp.getWriter();
+                    resp.setContentType("application/json;charset=UTF-8");
+                    PrintWriter out = resp.getWriter();
                             out.write("尚未登录，请先登录");
                             out.flush();
                             out.close();
