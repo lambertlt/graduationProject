@@ -62,9 +62,17 @@ public class UserController {
     @PostMapping("/identity/create")
     public void create(@RequestBody User user, HttpServletResponse resp) throws IOException {
         // user 是要修改的用户信息，user1 是当前登陆用户的身份信息
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User nowUser = (User) principal;
-        Message message = userService.save(user, nowUser);
+        User nowUser = null;
+        Message message = null;
+        try {
+            // 登陆状态不可以创建新用户
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            nowUser = (User) principal;
+            message = new Message(false, 400, "请先退出登录，在创建新用户", "");
+        } catch (Exception e) {
+            // 创建新用户
+            message = userService.save(user, nowUser);
+        }
         message.returnJson(resp);
     }
 
