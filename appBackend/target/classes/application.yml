@@ -14,8 +14,8 @@ spring:
   #     password: lambert
   servlet:
     multipart:
-      max-file-size: 2096MB
-      max-request-size: 2096MB
+      max-file-size: 1024MB
+      max-request-size: 1024MB
       # 开启文件上传服务
       enabled: true
   datasource:
