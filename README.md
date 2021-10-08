@@ -12,7 +12,7 @@
 .
 ├── README.md 
 ├── appBackend  后端项目文件夹
-└── appWeb			前端项目文件夹
+└── appWeb  前端项目文件夹
 ```
 
 ## project plan
