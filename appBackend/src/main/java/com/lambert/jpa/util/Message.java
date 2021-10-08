@@ -45,6 +45,44 @@ public class Message {
         this.objectData = objectData;
     }
 
+    static void Yes(HttpServletResponse resp, String message, Object data) throws IOException {
+        resp.setContentType("application/json;charset=utf-8");
+        PrintWriter out = resp.getWriter();
+        HashMap hashMap = new HashMap();
+        hashMap.put("success", true);
+        hashMap.put("status", 200);
+        hashMap.put("message", message);
+        hashMap.put("data", data);
+        out.write(new ObjectMapper().writeValueAsString(hashMap));
+        out.flush();
+        out.close();
+    }
+
+    static void Yes(HttpServletResponse resp, String message, List data) throws IOException {
+        resp.setContentType("application/json;charset=utf-8");
+        PrintWriter out = resp.getWriter();
+        HashMap hashMap = new HashMap();
+        hashMap.put("success", true);
+        hashMap.put("status", 200);
+        hashMap.put("message", message);
+        hashMap.put("data", data);
+        out.write(new ObjectMapper().writeValueAsString(hashMap));
+        out.flush();
+        out.close();
+    }
+
+    static void No(HttpServletResponse resp, String message) throws IOException {
+        resp.setContentType("application/json;charset=utf-8");
+        PrintWriter out = resp.getWriter();
+        HashMap hashMap = new HashMap();
+        hashMap.put("success", false);
+        hashMap.put("status", 400);
+        hashMap.put("message", message);
+        out.write(new ObjectMapper().writeValueAsString(hashMap));
+        out.flush();
+        out.close();
+    }
+
     public void returnJson(HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json;charset=utf-8");
         PrintWriter out = resp.getWriter();
@@ -54,9 +92,9 @@ public class Message {
         hashMap.put("message", this.message);
         if (this.listData != null)
             hashMap.put("data", this.listData);
-        else if (this.objectData != null)
+        if (this.objectData != null)
             hashMap.put("data", this.objectData);
-        else
+        if (this.data != "" && this.data != null)
             hashMap.put("data", this.data);
         out.write(new ObjectMapper().writeValueAsString(hashMap));
         out.flush();

@@ -5,6 +5,7 @@ import com.lambert.jpa.service.UserService;
 import com.lambert.jpa.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,8 @@ public class UserController {
      * @url /identity/detail
      * @return_param status int 状态码
      * @return_param data String 数据
+     * @return_param success Boolean 是否成功
+     * @return_param message String 消息
      * @remark null
      * @number null
      */
@@ -51,12 +54,17 @@ public class UserController {
      * @url /identity/create
      * @return_param status int 状态码
      * @return_param data String 数据
+     * @return_param success Boolean 是否成功
+     * @return_param message String 消息
      * @remark null
      * @number null
      */
     @PostMapping("/identity/create")
     public void create(@RequestBody User user, HttpServletResponse resp) throws IOException {
-        Message message = userService.save(user);
+        // user 是要修改的用户信息，user1 是当前登陆用户的身份信息
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User nowUser = (User) principal;
+        Message message = userService.save(user, nowUser);
         message.returnJson(resp);
     }
 
@@ -74,14 +82,18 @@ public class UserController {
      * @url /identity/update
      * @return_param status int 状态码
      * @return_param data String 数据
+     * @return_param success Boolean 是否成功
+     * @return_param message String 消息
      * @remark null
      * @number null
      */
     @PostMapping("/identity/update")
     public void update(@RequestBody User user, HttpServletResponse resp, Authentication authentication) throws IOException {
-        String username = authentication.getName();
+        // user 是要修改的用户信息，user1 是当前登陆用户的身份信息
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User nowUser = (User) principal;
         // TO do 管理员权限相关
-        Message message = userService.save(user);
+        Message message = userService.save(user, nowUser);
         message.returnJson(resp);
     }
 
@@ -97,6 +109,8 @@ public class UserController {
      * @url /identity/delete
      * @return_param status int 状态码
      * @return_param data String 数据
+     * @return_param success Boolean 是否成功
+     * @return_param message String 消息
      * @remark null
      * @number null
      */
@@ -119,6 +133,8 @@ public class UserController {
      * @url /login
      * @return_param status int 状态码
      * @return_param data String 数据
+     * @return_param success Boolean 是否成功
+     * @return_param message String 消息
      * @remark null
      * @number null
      */

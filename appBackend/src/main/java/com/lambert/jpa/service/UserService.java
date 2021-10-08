@@ -57,7 +57,7 @@ public class UserService implements UserDetailsService {
         return message;
     }
 
-    public Message save(User user) {
+    public Message save(User user, User nowUser) {
         // 创建用户、更新用户
         Message message = null;
         if (user.getId() == null) {
@@ -80,7 +80,7 @@ public class UserService implements UserDetailsService {
                 User user2 = userMapper.save(user1);
                 message = new Message(true, 200, "1", user2);
             }
-        } else if (user.getPassword() == null) {
+        } else if (user.getPassword() == null && nowUser.getPower() == 1) {
             // id不为空，用户密码为空，表明修改权限
             try {
                 Long id = user.getId();
@@ -90,8 +90,9 @@ public class UserService implements UserDetailsService {
                 return message;
             }
             userRolesMapper.changeRoles(user.getId(), user.getPower());
+            userRolesMapper.changePower(user.getId(), user.getPower());
             message = new Message(true, 200, "修改成功", "");
-        } else if (user.getPower() == null) {
+        } else if (user.getPower() == null && nowUser.getId() == user.getId() || user.getPower() == null && nowUser.getPower() == 1) {
             // id不为空，用户权限为空，表明修改密码
             try {
                 Long id = user.getId();

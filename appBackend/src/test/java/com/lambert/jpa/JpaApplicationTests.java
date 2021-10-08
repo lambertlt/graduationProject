@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @SpringBootTest
 class JpaApplicationTests {
@@ -23,10 +26,13 @@ class JpaApplicationTests {
 
     @Test
     void contextLoads() {
-        User user = new User();
-        user.setId(3L);
-        user.setPower(1L);
-        userService.save(user);
+        long now1 = System.currentTimeMillis();
+        long now2 = new Date().getTime();
+        long time = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).parse("2018-06-30 20:00:00", new ParsePosition(0)).getTime() / 1000;
+        System.out.println("获取指定时间的时间戳:" + time);
+        System.out.println("当前时间戳:" + now1);
+        System.out.println("当前时间戳:" + now2);
+        System.out.println(new Date());
     }
 
 }

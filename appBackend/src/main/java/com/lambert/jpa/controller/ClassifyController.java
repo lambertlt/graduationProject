@@ -27,6 +27,8 @@ public class ClassifyController {
      * @url /classify/create
      * @return_param status int 状态码
      * @return_param data String 数据
+     * @return_param success Boolean 是否成功
+     * @return_param message String 消息
      * @remark null
      * @number null
      */
@@ -47,6 +49,8 @@ public class ClassifyController {
      * @method get
      * @return_param status int 状态码
      * @return_param data String 数据
+     * @return_param success Boolean 是否成功
+     * @return_param message String 消息
      * @url /classify/delete
      * @remark null
      * @number null
@@ -70,6 +74,8 @@ public class ClassifyController {
      * @url /classify/update
      * @return_param status int 状态码
      * @return_param data String 数据
+     * @return_param success Boolean 是否成功
+     * @return_param message String 消息
      * @remark
      * @number null
      */
@@ -90,6 +96,8 @@ public class ClassifyController {
      * @url /classify/findAll
      * @return_param status int 状态码
      * @return_param data String 数据
+     * @return_param success Boolean 是否成功
+     * @return_param message String 消息
      * @remark null
      * @number null
      */

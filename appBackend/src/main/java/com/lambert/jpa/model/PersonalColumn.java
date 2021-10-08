@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.List;
 
 @Data
 @Entity(name = "t_personal_column")
@@ -16,9 +17,11 @@ public class PersonalColumn {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // id
-    private String name; // 专栏名称
+    private String title; // 专栏名称
     private String content; // 专栏内容
-    private String media; // 存储媒体id
     private Long userId; // 创建者id
     private String username; // 创建者的名字
+
+    // 创建完专栏才可以添加媒体资源
+    private String mediaIdArray; // 存储媒体id数组
 }
