@@ -8,10 +8,11 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
   security:
-  #   user:
-  #     name: lambert
-  #     password: lambert
+  #    user:
+  #      name: lambert
+  #      password: lambert
   servlet:
     multipart:
       max-file-size: 1024MB
@@ -20,14 +21,17 @@ spring:
       enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://47.94.160.237:3306/app?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
-    url: jdbc:mysql://localhost:3306/app?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://47.94.160.237:3306/app?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    #    url: jdbc:mysql://localhost:3306/app?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     #    url: jdbc:mysql://47.94.160.237:3306/app?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
     password: lamberts
+  sql:
+    init:
+      mode: always
 server:
-#  port: 8888
-  port: 8080
+  port: 8888
+  #  port: 8080
   servlet:
     encoding:
       charset: UTF-8

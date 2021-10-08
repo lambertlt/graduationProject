@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     RoleHierarchy roleHierarchy() {
         // 角色继承
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-        hierarchy.setHierarchy("ROLE_admin > ROLE_user > ROLE_tourist");
+        hierarchy.setHierarchy("ROLE_admin > ROLE_media > ROLE_user");
         return hierarchy;
     }
 
@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/admin/**").hasRole("admin")
 //                .antMatchers("/user/**").hasRole("user")
                 .antMatchers("/identity/delete", "/classify/create", "/classify/delete", "/classify/update").hasRole("admin")
+                .antMatchers().hasRole("media")
                 .antMatchers("/identity/detail", "/identity/update", "/file/upload", "/file/download", "/file/update", "/file/deleteById", "/file/updateMedia", "/file/findAllMediaByUserId", "/personalColumn/create", "/personalColumn/delete", "/personalColumn/update").hasRole("user")
                 .antMatchers("/identity/create", "/classify/findAll", "/file/video/player", "/file/findMediaById", "/personalColumn/findAll", "/personalColumn/findAllByUserId", "/personalColumn/findById").permitAll()
 //                .antMatchers("/tourist/**").hasRole("tourist")
