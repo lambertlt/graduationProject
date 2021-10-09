@@ -15,13 +15,11 @@
 └── appWeb      前端项目文件夹
 ```
 
-## project plan
+## project author
 
 由Lambert、liulinboyi共同完成毕业设计。
 
-目标：
+## appBackend 后端项目部署步骤
 
-- 1个月时间完成项目第一个bate版，截止时间是10月。
-- 前半个月，完成后端接口开发，以及后台管理系统的搭建。
-- 后半个月，完成app前端部分的各自设计并实现。
-
+1. 将appBackend下的`app.sql`在mysql命令行运行
+2. 用 eclipse 或 idea 运行 appBackend 目录下的项目运行即可
