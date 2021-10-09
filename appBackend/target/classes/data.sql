@@ -1,7 +1,3 @@
--- INSERT INTO `t_user` VALUES (1, b'1', b'1', b'1', b'1', '$2a$10$Flc0poGrIaUP.Wef3Mi6xOcU4voDHtM7w.Eke2/7LT0U3pSsfwa.O', 'admin', 1);
--- INSERT INTO `t_user_roles` VALUES (1, 1);
--- INSERT INTO `t_role` VALUES (3, 'ROLE_media', '审核员');
-
 -- 创建root用户 admin
 INSERT INTO `t_user`
 SELECT 1, b'1', b'1', b'1', b'1', '$2a$10$Flc0poGrIaUP.Wef3Mi6xOcU4voDHtM7w.Eke2/7LT0U3pSsfwa.O', 'admin', 1
@@ -40,6 +36,22 @@ SELECT 3, 1
 FROM dual
 WHERE not exists (select * from `t_user_roles`
 where t_user_id = 3);
+
+-- 添加管理员
+
+INSERT INTO `t_role`
+SELECT 1, 'ROLE_admin', '管理员'
+FROM dual
+WHERE not exists (select * from `t_role`
+where id = 1);
+
+-- 添加普通用户
+
+INSERT INTO `t_role`
+SELECT 2, 'ROLE_user', '普通用户'
+FROM dual
+WHERE not exists (select * from `t_role`
+where id = 2);
 
 -- 添加角色审核员
 

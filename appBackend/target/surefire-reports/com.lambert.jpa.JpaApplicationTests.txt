@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.lambert.jpa.JpaApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.792 s - in com.lambert.jpa.JpaApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.707 s - in com.lambert.jpa.JpaApplicationTests
