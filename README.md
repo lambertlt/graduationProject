@@ -23,3 +23,7 @@
 
 1. 将appBackend下的`app.sql`在mysql命令行运行
 2. 用 eclipse 或 idea 运行 appBackend 目录下的项目运行即可
+
+## 接口在线文档
+
+[showdoc Api](https://www.showdoc.com.cn/)
