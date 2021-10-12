@@ -2,15 +2,11 @@ package com.lambert.jpa;
 
 import com.lambert.jpa.mapper.ClassifyMapper;
 import com.lambert.jpa.mapper.RoleMapper;
-import com.lambert.jpa.model.Classify;
-import com.lambert.jpa.model.Role;
-import com.lambert.jpa.model.User;
 import com.lambert.jpa.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.servlet.http.HttpServletResponse;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;

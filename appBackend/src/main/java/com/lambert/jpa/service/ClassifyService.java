@@ -1,7 +1,7 @@
 package com.lambert.jpa.service;
 
 import com.lambert.jpa.mapper.ClassifyMapper;
-import com.lambert.jpa.model.Classify;
+import com.lambert.jpa.pojo.Classify;
 import com.lambert.jpa.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package com.lambert.jpa.service;
 
 import com.lambert.jpa.mapper.MediaMapper;
-import com.lambert.jpa.model.Media;
-import com.lambert.jpa.model.User;
+import com.lambert.jpa.pojo.Media;
+import com.lambert.jpa.pojo.User;
 import com.lambert.jpa.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

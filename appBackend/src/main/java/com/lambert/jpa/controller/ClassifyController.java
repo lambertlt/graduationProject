@@ -1,6 +1,6 @@
 package com.lambert.jpa.controller;
 
-import com.lambert.jpa.model.Classify;
+import com.lambert.jpa.pojo.Classify;
 import com.lambert.jpa.service.ClassifyService;
 import com.lambert.jpa.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 
 @RestController
 public class ClassifyController {

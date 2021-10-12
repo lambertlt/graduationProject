@@ -1,7 +1,6 @@
 package com.lambert.jpa.mapper;
 
-import com.lambert.jpa.model.Media;
-import org.apache.ibatis.annotations.Param;
+import com.lambert.jpa.pojo.Media;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

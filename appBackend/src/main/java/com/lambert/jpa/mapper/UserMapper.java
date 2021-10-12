@@ -1,6 +1,6 @@
 package com.lambert.jpa.mapper;
 
-import com.lambert.jpa.model.User;
+import com.lambert.jpa.pojo.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

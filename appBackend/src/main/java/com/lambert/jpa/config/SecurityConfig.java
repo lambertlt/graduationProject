@@ -54,8 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/user/**").hasRole("user")
                 .antMatchers("/identity/delete", "/classify/create", "/classify/delete", "/classify/update").hasRole("admin")
                 .antMatchers().hasRole("media")
-                .antMatchers("/identity/detail", "/identity/update", "/file/upload", "/file/download", "/file/update", "/file/deleteById", "/file/updateMedia", "/file/findAllMediaByUserId", "/personalColumn/create", "/personalColumn/delete", "/personalColumn/update").hasRole("user")
-                .antMatchers("/identity/create", "/classify/findAll", "/file/video/player", "/file/findMediaById", "/personalColumn/findAll", "/personalColumn/findAllByUserId", "/personalColumn/findById").permitAll()
+                .antMatchers(   "/personalColumn/update", "/personalColumn/delete", "/personalColumn/create", "/identity/detail", "/identity/update", "/file/upload", "/file/download", "/file/update", "/file/deleteById", "/file/updateMedia", "/file/findAllMediaByUserId", "/personalColumn/create", "/personalColumn/delete", "/personalColumn/update").hasRole("user")
+                .antMatchers("/personalColumn/findAll","/personalColumn/findAllByUserId","/personalColumn/findById","/identity/create", "/classify/findAll", "/file/video/player", "/file/findMediaById", "/personalColumn/findAll", "/personalColumn/findAllByUserId", "/personalColumn/findById").permitAll()
 //                .antMatchers("/tourist/**").hasRole("tourist")
                 .anyRequest().authenticated() // 任何接口都需要拦截验证权限
                 .and()

@@ -124,6 +124,7 @@ BEGIN;
 INSERT INTO `t_user` VALUES (1, b'1', b'1', b'1', b'1', '$2a$10$g0LlMVrfUlmRxYKUPpzsT.Ww6pdSJoHWrFdGJqd9sF96YRbqS78zG', 1, 'admin');
 INSERT INTO `t_user` VALUES (2, b'1', b'1', b'1', b'1', '$2a$10$93sUDzzbjGCBOxi/WdeNYuuF.oaEjZ9ygip3HoMOEiRO/ww7KkoE.', 1, 'lambert');
 INSERT INTO `t_user` VALUES (3, b'1', b'1', b'1', b'1', '$2a$10$9284hgIkXcBVjYQA1Csqx..pcfLh5KKfkID9UpjoDQ3fNf0kfY14K', 1, 'liulinboyi');
+INSERT INTO `t_user` VALUES (4, b'1', b'1', b'1', b'1', '$2a$10$9284hgIkXcBVjYQA1Csqx..pcfLh5KKfkID9UpjoDQ3fNf0kfY14K', 1, 'liziheng');
 COMMIT;
 
 -- ----------------------------

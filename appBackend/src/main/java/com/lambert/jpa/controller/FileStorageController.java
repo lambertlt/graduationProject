@@ -1,7 +1,7 @@
 package com.lambert.jpa.controller;
 
-import com.lambert.jpa.model.Media;
-import com.lambert.jpa.model.User;
+import com.lambert.jpa.pojo.Media;
+import com.lambert.jpa.pojo.User;
 import com.lambert.jpa.service.FileStorageService;
 import com.lambert.jpa.util.Message;
 import com.lambert.jpa.util.NonStaticResourceHttpRequestHandler;
@@ -20,7 +20,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor

@@ -1,6 +1,6 @@
 package com.lambert.jpa.controller;
 
-import com.lambert.jpa.model.User;
+import com.lambert.jpa.pojo.User;
 import com.lambert.jpa.service.UserService;
 import com.lambert.jpa.util.Message;
 import org.springframework.beans.factory.annotation.Autowired;
