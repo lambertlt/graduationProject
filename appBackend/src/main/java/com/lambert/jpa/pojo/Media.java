@@ -23,7 +23,7 @@ public class Media {
     private Long userId; // 创建者的id
     private String username; // 创建者的名字
     private String fileName; // 文件名称
-
+    private boolean isShow; // 媒体是否审核通过
 //                // 获取文件后缀
 //                String line = path;
 //                String pattern = "(?:FileStorage/.*/)(.*\\..*$)";
@@ -44,6 +44,7 @@ public class Media {
         this.userId = userId;
         this.username = username;
         this.fileName = fileName;
+        this.isShow = false;
     }
 
     public Media(String title, String path, String type, Long time, Long size, String classify, Long userId, String username) {
@@ -55,6 +56,7 @@ public class Media {
         this.classify = classify;
         this.userId = userId;
         this.username = username;
+        this.isShow = false;
     }
 
     public Media() {

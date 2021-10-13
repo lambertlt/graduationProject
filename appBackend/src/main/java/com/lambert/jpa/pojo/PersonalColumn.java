@@ -2,9 +2,7 @@ package com.lambert.jpa.pojo;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.Data;
-import org.apache.tomcat.util.buf.StringUtils;
 import org.hibernate.annotations.Proxy;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -21,6 +19,7 @@ public class PersonalColumn {
     private String content; // 专栏内容
     private Long userId; // 创建者id
     private String username; // 创建者的名字
+    private Long classifyId; // 专栏分类
 
     // 创建完专栏才可以添加媒体资源
     @Transient // 设置这个之后不会将这个值存入数据库

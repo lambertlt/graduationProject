@@ -25,6 +25,7 @@ public class PersonalColumnController {
      * @param "mediaIdArray" 必选 Array 专栏内音视频id数组
      * @param "userId"       必选 Long 用户Id
      * @param "username"     必选 String 用户名
+     * @param "classifyId"   必选 Long 专栏分类
      * @return {"status":200,"data":{"id":"1","username":"12154545"}}
      * @catalog 个人专栏接口
      * @title 专栏创建
@@ -80,6 +81,7 @@ public class PersonalColumnController {
      * @param "mediaIdArray" 必选 Array 专栏内音视频id数组
      * @param "userId"       必选 Long 用户Id
      * @param "username"     必选 String 用户名
+     * @param "classifyId"   必选 Long 专栏分类
      * @return {"status":200,"data":{"id":"1","username":"12154545"}}
      * @catalog 个人专栏接口
      * @title 专栏修改

@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 09/10/2021 08:59:29
+ Date: 13/10/2021 09:00:47
 */
 
 create database if not exists app default character set utf8 collate utf8_general_ci;
@@ -22,6 +22,26 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
+-- Table structure for t_article
+-- ----------------------------
+DROP TABLE IF EXISTS `t_article`;
+CREATE TABLE `t_article` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `classify` varchar(255) DEFAULT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `user_id` bigint DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of t_article
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
 -- Table structure for t_classify
 -- ----------------------------
 DROP TABLE IF EXISTS `t_classify`;
@@ -29,7 +49,7 @@ CREATE TABLE `t_classify` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_classify
@@ -52,6 +72,7 @@ CREATE TABLE `t_media` (
   `type` varchar(255) DEFAULT NULL,
   `user_id` bigint DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
+  `is_show` bit(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -67,13 +88,15 @@ COMMIT;
 DROP TABLE IF EXISTS `t_personal_column`;
 CREATE TABLE `t_personal_column` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `content` varchar(255) DEFAULT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   `media_id_array` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   `user_id` bigint DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
+  `classify` varchar(255) DEFAULT NULL,
+  `classify_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_personal_column
@@ -98,7 +121,7 @@ CREATE TABLE `t_role` (
 BEGIN;
 INSERT INTO `t_role` VALUES (1, 'ROLE_admin', '管理员');
 INSERT INTO `t_role` VALUES (2, 'ROLE_user', '普通用户');
-INSERT INTO `t_role` VALUES (3, 'ROLE_media', '审核员');
+INSERT INTO `t_role` VALUES (3, 'ROLE_assessor', '审核员');
 COMMIT;
 
 -- ----------------------------
@@ -115,7 +138,7 @@ CREATE TABLE `t_user` (
   `power` bigint DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user
@@ -147,6 +170,7 @@ BEGIN;
 INSERT INTO `t_user_roles` VALUES (1, 1);
 INSERT INTO `t_user_roles` VALUES (2, 1);
 INSERT INTO `t_user_roles` VALUES (3, 1);
+INSERT INTO `t_user_roles` VALUES (4, 1);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -1,6 +1,7 @@
 package com.lambert.jpa.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lambert.jpa.pojo.User;
 import com.lambert.jpa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -33,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     RoleHierarchy roleHierarchy() {
         // 角色继承
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-        hierarchy.setHierarchy("ROLE_admin > ROLE_media > ROLE_user");
+        hierarchy.setHierarchy("ROLE_admin > ROLE_assessor > ROLE_user");
         return hierarchy;
     }
 
@@ -53,9 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/admin/**").hasRole("admin")
 //                .antMatchers("/user/**").hasRole("user")
                 .antMatchers("/identity/delete", "/classify/create", "/classify/delete", "/classify/update").hasRole("admin")
-                .antMatchers().hasRole("media")
-                .antMatchers(   "/personalColumn/update", "/personalColumn/delete", "/personalColumn/create", "/identity/detail", "/identity/update", "/file/upload", "/file/download", "/file/update", "/file/deleteById", "/file/updateMedia", "/file/findAllMediaByUserId", "/personalColumn/create", "/personalColumn/delete", "/personalColumn/update").hasRole("user")
-                .antMatchers("/personalColumn/findAll","/personalColumn/findAllByUserId","/personalColumn/findById","/identity/create", "/classify/findAll", "/file/video/player", "/file/findMediaById", "/personalColumn/findAll", "/personalColumn/findAllByUserId", "/personalColumn/findById").permitAll()
+                .antMatchers().hasRole("assessor")
+                .antMatchers("/personalColumn/update", "/personalColumn/delete", "/personalColumn/create", "/identity/detail", "/identity/update", "/file/upload", "/file/download", "/file/update", "/file/deleteById", "/file/updateMedia", "/file/findAllMediaByUserId", "/personalColumn/create", "/personalColumn/delete", "/personalColumn/update").hasRole("user")
+                .antMatchers("/personalColumn/findAll", "/personalColumn/findAllByUserId", "/personalColumn/findById", "/identity/create", "/classify/findAll", "/file/video/player", "/file/findMediaById", "/personalColumn/findAll", "/personalColumn/findAllByUserId", "/personalColumn/findById").permitAll()
 //                .antMatchers("/tourist/**").hasRole("tourist")
                 .anyRequest().authenticated() // 任何接口都需要拦截验证权限
                 .and()
@@ -75,8 +77,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler((req, resp, authentication) -> {
                     resp.setContentType("application/json;charset=UTF-8");
                     Object principal = authentication.getPrincipal();
+                    User nowUser = (User) principal;
+                    nowUser.setPassword("********");
                     PrintWriter out = resp.getWriter();
-                    out.write(new ObjectMapper().writeValueAsString(principal));
+                    out.write(new ObjectMapper().writeValueAsString(nowUser));
                     out.flush();
                     out.close();
                 })
