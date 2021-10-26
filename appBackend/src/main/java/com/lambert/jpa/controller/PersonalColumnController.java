@@ -130,7 +130,7 @@ public class PersonalColumnController {
     /**
      * showdoc
      *
-     * @param "userId" 必选 Long 专栏标题
+     * @param "userId" 必选 Long 用户id
      * @return {"status":200,"data":{"id":"1","username":"12154545"}}
      * @catalog 个人专栏接口
      * @title 通过用户Id查找专栏
@@ -148,6 +148,30 @@ public class PersonalColumnController {
     @GetMapping("/findAllByUserId")
     void findAllByUserId(@RequestParam(value = "userId") Long userId, HttpServletResponse resp) throws IOException {
         message = personalColumnService.findAllByUserId(userId);
+        message.returnJson(resp);
+    }
+
+    /**
+     * showdoc
+     *
+     * @param "classify" 必选 Long 专栏id
+     * @return {"status":200,"data":{"id":"1","username":"12154545"}}
+     * @catalog 个人专栏接口
+     * @title 通过分类Id查找专栏
+     * @description 访问权限：用户；
+     * @method get
+     * @url /personalColumn/findAllByClassifyId
+     * @header token 可选 string 设备token
+     * @return_param status int 状态码
+     * @return_param data String 数据
+     * @return_param success Boolean 是否成功
+     * @return_param message String 消息
+     * @remark null
+     * @number null
+     */
+    @GetMapping("/findAllByClassifyId")
+    void findAllByClassifyId(@RequestParam(value = "classifyId") Long classifyId, HttpServletResponse resp) throws IOException {
+        message = personalColumnService.findAllByClassifyId(classifyId);
         message.returnJson(resp);
     }
 

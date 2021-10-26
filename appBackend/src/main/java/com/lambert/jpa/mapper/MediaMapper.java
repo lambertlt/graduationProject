@@ -13,10 +13,14 @@ public interface MediaMapper extends JpaRepository<Media, Long> {
     @Modifying
 //    @Query(value = "update t_media u set u.title=:title,u.classify=:classify where u.id=:id")
 //    void update(Long id, String title, String classify);
-    @Query(value = "update t_media u set u.title=:#{#media.title},u.classify=:#{#media.classify} where u.id=:#{#media.id}")
+    @Query(value = "update t_media u set u.title=:#{#media.title},u.classifyId=:#{#media.classifyId} where u.id=:#{#media.id}")
     void update(Media media);
 
     @Query(value = "select u from t_media u where u.userId=:id")
     List<Media> findAllByUserId(Long id);
 
+    @Transactional
+    @Modifying
+    @Query(value = "update t_media u set u.img=:path where u.id=:id")
+    Object updateImg(Long id, String path);
 }

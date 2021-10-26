@@ -25,4 +25,10 @@ public interface UserMapper extends JpaRepository<User, Long> {
     // 方法三
     @Query(value = "update t_user u set u.password=:encode where u.id=:id")
     void changePassword(@Param("id") Long id, @Param("encode") String encode);
+
+    // 更新用户头像地址
+    @Transactional
+    @Modifying
+    @Query(value = "update t_user u set u.avatar=:path where u.id=:id")
+    Object updateAvatarPath(@Param("id") Long id, @Param("path") String path);
 }

@@ -13,7 +13,8 @@ public class Media {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // id
     private String title; // 媒体文件的名称
-    private String classify; // 所属的大分类
+    private Long classifyId; // 所属的大分类
+    private String img; // 媒体文件的介绍图片
 
     // 上传文件时同时就自动获取了
     private String path; // 媒体文件的服务器路径
@@ -47,13 +48,13 @@ public class Media {
         this.isShow = false;
     }
 
-    public Media(String title, String path, String type, Long time, Long size, String classify, Long userId, String username) {
+    public Media(String title, String path, String type, Long time, Long size, Long classifyId, Long userId, String username) {
         this.title = title;
         this.path = path;
         this.type = type;
         this.time = time;
         this.size = size;
-        this.classify = classify;
+        this.classifyId = classifyId;
         this.userId = userId;
         this.username = username;
         this.isShow = false;

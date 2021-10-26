@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : mysql
+ Source Server         : 服务器数据库
  Source Server Type    : MySQL
- Source Server Version : 80022
- Source Host           : localhost:3306
+ Source Server Version : 80021
+ Source Host           : 47.94.160.237:3306
  Source Schema         : app
 
  Target Server Type    : MySQL
- Target Server Version : 80022
+ Target Server Version : 80021
  File Encoding         : 65001
 
- Date: 13/10/2021 09:00:47
+ Date: 26/10/2021 17:35:59
 */
 
 create database if not exists app default character set utf8 collate utf8_general_ci;
@@ -49,7 +49,7 @@ CREATE TABLE `t_classify` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_classify
@@ -63,7 +63,6 @@ COMMIT;
 DROP TABLE IF EXISTS `t_media`;
 CREATE TABLE `t_media` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `classify` varchar(255) DEFAULT NULL,
   `file_name` varchar(255) DEFAULT NULL,
   `path` varchar(255) DEFAULT NULL,
   `size` bigint DEFAULT NULL,
@@ -73,8 +72,10 @@ CREATE TABLE `t_media` (
   `user_id` bigint DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
   `is_show` bit(1) NOT NULL,
+  `img` varchar(255) DEFAULT NULL,
+  `classify_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_media
@@ -88,15 +89,14 @@ COMMIT;
 DROP TABLE IF EXISTS `t_personal_column`;
 CREATE TABLE `t_personal_column` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `content` varchar(255) DEFAULT NULL,
   `media_id_array` varchar(255) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   `user_id` bigint DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
-  `classify` varchar(255) DEFAULT NULL,
   `classify_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_personal_column
@@ -121,7 +121,7 @@ CREATE TABLE `t_role` (
 BEGIN;
 INSERT INTO `t_role` VALUES (1, 'ROLE_admin', '管理员');
 INSERT INTO `t_role` VALUES (2, 'ROLE_user', '普通用户');
-INSERT INTO `t_role` VALUES (3, 'ROLE_assessor', '审核员');
+INSERT INTO `t_role` VALUES (3, 'ROLE_media', '审核员');
 COMMIT;
 
 -- ----------------------------
@@ -134,20 +134,21 @@ CREATE TABLE `t_user` (
   `account_non_locked` bit(1) NOT NULL,
   `credentials_non_expired` bit(1) NOT NULL,
   `enabled` bit(1) NOT NULL,
-  `password` varchar(255) DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `power` bigint DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_user` VALUES (1, b'1', b'1', b'1', b'1', '$2a$10$g0LlMVrfUlmRxYKUPpzsT.Ww6pdSJoHWrFdGJqd9sF96YRbqS78zG', 1, 'admin');
-INSERT INTO `t_user` VALUES (2, b'1', b'1', b'1', b'1', '$2a$10$93sUDzzbjGCBOxi/WdeNYuuF.oaEjZ9ygip3HoMOEiRO/ww7KkoE.', 1, 'lambert');
-INSERT INTO `t_user` VALUES (3, b'1', b'1', b'1', b'1', '$2a$10$9284hgIkXcBVjYQA1Csqx..pcfLh5KKfkID9UpjoDQ3fNf0kfY14K', 1, 'liulinboyi');
-INSERT INTO `t_user` VALUES (4, b'1', b'1', b'1', b'1', '$2a$10$9284hgIkXcBVjYQA1Csqx..pcfLh5KKfkID9UpjoDQ3fNf0kfY14K', 1, 'liziheng');
+INSERT INTO `t_user` VALUES (1, b'1', b'1', b'1', b'1', '$2a$10$g0LlMVrfUlmRxYKUPpzsT.Ww6pdSJoHWrFdGJqd9sF96YRbqS78zG', 1, 'admin', NULL);
+INSERT INTO `t_user` VALUES (2, b'1', b'1', b'1', b'1', '$2a$10$93sUDzzbjGCBOxi/WdeNYuuF.oaEjZ9ygip3HoMOEiRO/ww7KkoE.', 1, 'lambert', NULL);
+INSERT INTO `t_user` VALUES (3, b'1', b'1', b'1', b'1', '$2a$10$9284hgIkXcBVjYQA1Csqx..pcfLh5KKfkID9UpjoDQ3fNf0kfY14K', 1, 'liulinboyi', NULL);
+INSERT INTO `t_user` VALUES (4, b'1', b'1', b'1', b'1', '$2a$10$9MOQY1pMCGKsOFnIpaAZm.fqhgxOrXFlqXdx2XWX9lnMWRalmjbgO', 1, 'liziheng', NULL);
 COMMIT;
 
 -- ----------------------------

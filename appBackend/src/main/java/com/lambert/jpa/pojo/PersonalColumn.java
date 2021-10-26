@@ -6,6 +6,7 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.Arrays;
+import java.util.List;
 
 @Data
 @Entity(name = "t_personal_column")
@@ -24,6 +25,8 @@ public class PersonalColumn {
     // 创建完专栏才可以添加媒体资源
     @Transient // 设置这个之后不会将这个值存入数据库
     private long[] mediaIdArrays = {}; // 存储媒体id字符串
+    @Transient
+    private List mediaArrays; // 媒体数组，存储查询好的专栏下全部媒体文件 TODO
 
     private String mediaIdArray; // 存储媒体id数组
 

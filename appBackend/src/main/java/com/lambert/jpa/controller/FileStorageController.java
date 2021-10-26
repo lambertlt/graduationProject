@@ -82,9 +82,9 @@ public class FileStorageController {
     /**
      * showdoc
      *
-     * @param "id"       必选 Long   媒体文件的id
-     * @param "title"    必选 String 媒体文件的标题
-     * @param "classify" 必选 String 媒体文件所属的分类
+     * @param "id"         必选 Long   媒体文件的id
+     * @param "title"      必选 String 媒体文件的标题
+     * @param "classifyId" 必选 Long 媒体文件所属的分类
      * @return {"status":200,"data":{"id":"1","username":"12154545"}}
      * @catalog 文件接口
      * @title 媒体文件信息修改
@@ -102,7 +102,7 @@ public class FileStorageController {
     @PostMapping("/updateMedia")
     public void updateMedia(@RequestBody Media media, HttpServletResponse resp) throws IOException {
         Message message;
-        System.out.println(media);
+//        System.out.println(media);
         message = fileStorageService.updateMedia(media);
         message.returnJson(resp);
     }
@@ -113,7 +113,7 @@ public class FileStorageController {
      * @param "file" 必选 char 选定一个文件
      * @return {"status":200,"data":{"id":"1","username":"12154545"}}
      * @catalog 文件接口
-     * @title 文件上传
+     * @title 媒体文件上传
      * @description 访问权限：用户或管理员；
      * @method post
      * @url /file/upload
@@ -124,15 +124,48 @@ public class FileStorageController {
      */
     @PostMapping("/upload")
     public void upload(@RequestParam("file") MultipartFile file, HttpServletResponse resp, Authentication authentication) throws IOException {
+        // 上传媒体文件 音频或视频
         Message message;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = (User) principal;
         try {
-            message = fileStorageService.save(file, user);
+            message = fileStorageService.save(file, user, "file", null);
         } catch (Exception e) {
             message = new Message(false, 400, "文件上传失败", "");
         }
         message.returnJson(resp);
+    }
+
+    /**
+     * showdoc
+     *
+     * @param "img"     必选 char 选定一个文件
+     * @param "type"    必选 String 文件种类：媒体图片(img)或用户头像(avatar) 使用英文作为类型识别
+     * @param "mediaId" 必选 String 文件种类：媒体图片或用户头像
+     * @return {"status":200,"data":{"id":"1","username":"12154545"}}
+     * @catalog 文件接口
+     * @title 图片文件上传
+     * @description 访问权限：用户或管理员；
+     * @method post
+     * @url /file/uploadImg
+     * @return_param status int 状态码
+     * @return_param data String 数据
+     * @remark null
+     * @number null
+     */
+    @PostMapping("/uploadImg")
+    public void uploadImg(@RequestParam(name = "mediaId", required = false) Long mediaId, @RequestParam(name = "type", required = true) String type, @RequestParam(value = "img", required = true) MultipartFile img, HttpServletResponse resp, Authentication authentication) throws IOException {
+        Message message;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) principal;
+        // 上传图片
+        try {
+            message = fileStorageService.save(img, user, type, mediaId);
+        } catch (Exception e) {
+            message = new Message(false, 400, "图片上传失败", "");
+        }
+        message.returnJson(resp);
+
     }
 
     /**
@@ -159,6 +192,23 @@ public class FileStorageController {
 //        message.returnJson(resp);
     }
 
+    /**
+     * showdoc
+     *
+     * @param "id" 必选 Long 文件id
+     * @return {"status":200,"data":{"id":"1","username":"12154545"}}
+     * @catalog 文件接口
+     * @title 文件删除
+     * @description 访问权限：用户；
+     * @method get
+     * @url /file/deleteById
+     * @return_param status int 状态码
+     * @return_param data String 数据
+     * @return_param success Boolean 是否成功
+     * @return_param message String 消息
+     * @remark null
+     * @number null
+     */
     @GetMapping("/deleteById")
     public void deleteById(@RequestParam(name = "id") Long id, HttpServletResponse resp) throws IOException {
         Message message = fileStorageService.deleteById(id);

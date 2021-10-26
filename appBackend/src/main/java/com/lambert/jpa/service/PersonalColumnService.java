@@ -74,4 +74,14 @@ public class PersonalColumnService {
         }
         return message;
     }
+
+    public Message findAllByClassifyId(Long classifyId) {
+        try {
+            List<PersonalColumn> list = personalColumnMapper.findAllByClassifyId(classifyId);
+            message = new Message(true, 200, "", list);
+        } catch (Exception e) {
+            message = new Message(false, 400, "", "");
+        }
+        return message;
+    }
 }

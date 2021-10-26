@@ -18,9 +18,10 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long power;
-    private String username;
-    private String password;
+    private Long power; // 用户的权利
+    private String username; // 用户名
+    private String password; // 密码
+    private String avatar; // 用户头像地址
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
