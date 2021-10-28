@@ -154,7 +154,7 @@ public class PersonalColumnController {
     /**
      * showdoc
      *
-     * @param "classify" 必选 Long 专栏id
+     * @param "classifyId" 必选 Long 专栏id
      * @return {"status":200,"data":{"id":"1","username":"12154545"}}
      * @catalog 个人专栏接口
      * @title 通过分类Id查找专栏
