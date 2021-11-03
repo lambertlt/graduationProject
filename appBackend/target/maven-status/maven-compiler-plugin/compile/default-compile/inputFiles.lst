@@ -6,13 +6,15 @@
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/controller/PersonalColumnController.java
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/mapper/UserRolesMapper.java
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/config/WebConfiguration.java
+/Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/controller/MediaController.java
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/service/ClassifyService.java
+/Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/service/MediaService.java
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/controller/UserController.java
+/Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/Main.java
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/mapper/UserMapper.java
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/controller/HelloController.java
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/controller/FileStorageController.java
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/config/SecurityConfig.java
-/Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/main.java
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/service/PersonalColumnService.java
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/util/Message.java
 /Users/lambert/IdeaProjects/jpa/src/main/java/com/lambert/jpa/pojo/Article.java

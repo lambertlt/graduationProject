@@ -1,15 +1,21 @@
 package com.lambert.jpa;
 
 import com.lambert.jpa.mapper.ClassifyMapper;
+import com.lambert.jpa.mapper.MediaMapper;
 import com.lambert.jpa.mapper.RoleMapper;
+import com.lambert.jpa.service.PersonalColumnService;
 import com.lambert.jpa.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.lang.reflect.Array;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class JpaApplicationTests {
@@ -19,6 +25,13 @@ class JpaApplicationTests {
     RoleMapper roleMapper;
     @Autowired
     UserService userService;
+    @Autowired
+    MediaMapper mediaMapper;
+
+    @Test
+    void mediaMapper() {
+//        getByPersonalColumnId
+    }
 
     @Test
     void contextLoads() {

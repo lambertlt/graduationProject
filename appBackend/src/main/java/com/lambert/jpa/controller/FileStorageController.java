@@ -139,9 +139,9 @@ public class FileStorageController {
     /**
      * showdoc
      *
-     * @param "img"     必选 char 选定一个文件
-     * @param "type"    必选 String 文件种类：媒体图片(img)或用户头像(avatar) 使用英文作为类型识别
-     * @param "mediaId" 必选 String 文件种类：媒体图片或用户头像
+     * @param "img"  必选 char 选定一个文件
+     * @param "type" 必选 String 媒体图片(media)或用户头像(avatar)或专栏图片(personalColumn)使用英文作为类型识别
+     * @param "id"   必选 Number 操作对象的Id，可以是媒体id，专栏id
      * @return {"status":200,"data":{"id":"1","username":"12154545"}}
      * @catalog 文件接口
      * @title 图片文件上传
@@ -154,7 +154,7 @@ public class FileStorageController {
      * @number null
      */
     @PostMapping("/uploadImg")
-    public void uploadImg(@RequestParam(name = "mediaId", required = false) Long mediaId, @RequestParam(name = "type", required = true) String type, @RequestParam(value = "img", required = true) MultipartFile img, HttpServletResponse resp, Authentication authentication) throws IOException {
+    public void uploadImg(@RequestParam(name = "id", required = false) Long mediaId, @RequestParam(name = "type", required = true) String type, @RequestParam(value = "img", required = true) MultipartFile img, HttpServletResponse resp, Authentication authentication) throws IOException {
         Message message;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = (User) principal;

@@ -1,6 +1,7 @@
 package com.lambert.jpa.service;
 
 import com.lambert.jpa.mapper.MediaMapper;
+import com.lambert.jpa.mapper.PersonalColumnMapper;
 import com.lambert.jpa.mapper.UserMapper;
 import com.lambert.jpa.pojo.Media;
 import com.lambert.jpa.pojo.User;
@@ -28,6 +29,9 @@ public class FileStorageService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    PersonalColumnMapper personalColumnMapper;
 
     public Message findMediaById(Long id) {
         Message message;
@@ -85,7 +89,7 @@ public class FileStorageService {
         }
     }
 
-    public Message save(MultipartFile multipartFile, User user, String types, Long mediaId) {
+    public Message save(MultipartFile multipartFile, User user, String types, Long id) {
         Message message = null;
         if (multipartFile.isEmpty()) {
             message = new Message(false, 400, "文件为空", "");
@@ -112,20 +116,39 @@ public class FileStorageService {
                 message = new Message(false, 400, "上传失败", "");
                 System.out.println("Could not store the file. Error:" + e.getMessage());
             }
-        } else if (types.equals("img")) {
+        } else if (types.equals("media")) {
             // 上传图片 媒体文件图片
-            String paths = "FileStorage/" + user.getUsername() + "/img/" + multipartFile.getOriginalFilename();
+            String paths = "FileStorage/" + user.getUsername() + "/media/" + multipartFile.getOriginalFilename();
             File file = new File(paths);
             if (file.exists()) {
                 System.out.println("file exists");
                 message = new Message(false, 400, "上传失败,文件已存在", "");
                 return message;
             }
-            init(user.getUsername() + "/img/"); // 创建对应用户的个人文件夹
+            init(user.getUsername() + "/media/"); // 创建对应用户的个人文件夹
             try {
                 Files.copy(multipartFile.getInputStream(), this.path.resolve(multipartFile.getOriginalFilename()));
                 String path = paths; // 媒体文件的服务器路径
-                Object obj = mediaMapper.updateImg(mediaId, path);
+                Object obj = mediaMapper.updateImg(id, path);
+                message = new Message(true, 200, "上传成功", obj);
+            } catch (Exception e) {
+                message = new Message(false, 400, "上传失败", "");
+                System.out.println("Could not store the file. Error:" + e.getMessage());
+            }
+        } else if (types.equals("personalColumn")) {
+            // 上传图片 专栏图片
+            String paths = "FileStorage/" + user.getUsername() + "/personalColumn/" + multipartFile.getOriginalFilename();
+            File file = new File(paths);
+            if (file.exists()) {
+                System.out.println("file exists");
+                message = new Message(false, 400, "上传失败,文件已存在", "");
+                return message;
+            }
+            init(user.getUsername() + "/personalColumn/"); // 创建对应用户的个人文件夹
+            try {
+                Files.copy(multipartFile.getInputStream(), this.path.resolve(multipartFile.getOriginalFilename()));
+                String path = paths; // 媒体文件的服务器路径
+                Object obj = personalColumnMapper.updateImg(id, path);
                 message = new Message(true, 200, "上传成功", obj);
             } catch (Exception e) {
                 message = new Message(false, 400, "上传失败", "");

@@ -24,17 +24,21 @@ public class PersonalColumn {
 
     // 创建完专栏才可以添加媒体资源
     @Transient // 设置这个之后不会将这个值存入数据库
-    private long[] mediaIdArrays = {}; // 存储媒体id字符串
+    private long[] mediaIdArrays = {}; // 存储媒体id字符串,这个是接收到的数组
     @Transient
-    private List mediaArrays; // 媒体数组，存储查询好的专栏下全部媒体文件 TODO
+    private List<String> mediaArrays; // 媒体数组，存储查询好的专栏下全部媒体文件 TODO
 
     private String mediaIdArray; // 存储媒体id数组
+
+    private String img; // 存放专栏图片
 
     void PersonalColumn() {
 
     }
 
     public void MediaIdArrayToString() {
+//        this.mediaArrays = (List) this.mediaIdArrays;
+        // TODO 将数组转换为集合
         this.mediaIdArray = Arrays.toString(this.mediaIdArrays); // 将发来的数组转换成字符串，
     }
 

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 public interface MediaMapper extends JpaRepository<Media, Long> {
     @Transactional
@@ -23,4 +24,14 @@ public interface MediaMapper extends JpaRepository<Media, Long> {
     @Modifying
     @Query(value = "update t_media u set u.img=:path where u.id=:id")
     Object updateImg(Long id, String path);
+
+    @Query(nativeQuery = true, value = "select * from t_media where id in (:list)")
+    List<Map<String, Object>> getMediaByArrayString(List<String> list);
+
+//    @Query(nativeQuery = true, value = "select * from t_media where id in (:list)")
+//    Map<String, Object> getMediaByArray(String[] list);
+
+    @Query(nativeQuery = true, value = "select * from t_media where id in (:list)")
+    List<Map<String, Object>> getMediaByArrayLong(long[] list);
+    // jpa dao层默认返回List<Map<String,Object> 格式的数据
 }
