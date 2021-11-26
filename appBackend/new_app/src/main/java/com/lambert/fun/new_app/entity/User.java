@@ -2,7 +2,8 @@ package com.lambert.fun.new_app.entity;
 
 import com.lambert.fun.new_app.service.serviceImpl.RoleServiceImpl;
 import com.lambert.fun.new_app.util.BeanContext;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.Proxy;
@@ -11,16 +12,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "t_user") // jpa 查询时指代实体表的名称
 @Table(name = "t_user") // 数据库中真实表的名称
 @Proxy(lazy = false)
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
+    private static final long serialVersionUID = -3070676430618143719L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     /*
@@ -35,12 +39,12 @@ public class User implements UserDetails {
     private String password; // 密码
     private String avatar; // 用户头像地址
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date; // 时间
+    private Date creatTime; // 时间
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     // fetch = FetchType.EAGER:异步加载 ；cascade = CascadeType.PERSIST 级联操作
     /*
      * CascadeType.REMOVE
@@ -64,7 +68,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, Long power, String username, String password, String avatar, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, List<Role> roles, Date date) {
+    public User(Long id, Long power, String username, String password, String avatar, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, List<Role> roles, Date creatTime) {
         this.id = id;
         this.power = power;
         this.username = username;
@@ -75,7 +79,7 @@ public class User implements UserDetails {
         this.credentialsNonExpired = credentialsNonExpired;
         this.enabled = enabled;
         this.roles = roles;
-        this.date = date;
+        this.creatTime = creatTime;
     }
 
     public static User getUser(String username, String password, Long power, List<Role> roles) {
@@ -89,7 +93,7 @@ public class User implements UserDetails {
         user.setCredentialsNonExpired(true);
         user.setAccountNonLocked(true);
         user.setAccountNonExpired(true);
-        user.setDate(new Date());
+        user.setCreatTime(new Date());
         // 进行service调用
         RoleServiceImpl roleService = BeanContext.getApplicationContext().getBean(RoleServiceImpl.class);
         Role role = roleService.loadRoleById(id);
@@ -136,7 +140,7 @@ public class User implements UserDetails {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", date=" + date +
+                ", creatTime=" + creatTime +
                 ", accountNonExpired=" + accountNonExpired +
                 ", accountNonLocked=" + accountNonLocked +
                 ", credentialsNonExpired=" + credentialsNonExpired +

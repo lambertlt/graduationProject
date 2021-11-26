@@ -1,5 +1,6 @@
 package com.lambert.fun.new_app.service.serviceImpl;
 
+import com.lambert.fun.new_app.dao.ForeignDelete;
 import com.lambert.fun.new_app.dao.UserMapper;
 import com.lambert.fun.new_app.entity.Role;
 import com.lambert.fun.new_app.entity.User;
@@ -21,7 +22,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Autowired
     UserMapper userMapper;
 
-    private Object msg;
+    @Autowired
+    ForeignDelete foreignDelete;
+
+    private Object msg = new Object();
+    private Map map = new HashMap();
+
+    public void clearMap() {
+        map = new HashMap<>();
+    }
 
     @Override
     // 查找用户 name
@@ -63,8 +72,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     // 删除用户
     public Object deleteUser(Long id) {
+        clearMap();
+        foreignDelete.deleteUserRolesByUserId(id);
+        foreignDelete.setPictureUserIdByUserId(id);
         userMapper.deleteById(id);
-        Map map = new HashMap();
         map.put("id", id);
         return map;
     }

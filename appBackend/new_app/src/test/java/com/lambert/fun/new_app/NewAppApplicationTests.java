@@ -32,9 +32,13 @@ class NewAppApplicationTests {
     @Autowired
     MediaMapper mediaMapper;
 
+    @Autowired
+    ForeignDelete foreignDelete;
+
     @Test
     void contextLoads() {
-
+        Object msg = mediaMapper.getLikeItNumber(1L);
+        System.out.println(msg);
     }
 
     @Test

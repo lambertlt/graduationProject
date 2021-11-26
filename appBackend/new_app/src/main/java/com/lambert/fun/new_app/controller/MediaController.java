@@ -1,7 +1,7 @@
 package com.lambert.fun.new_app.controller;
 
-import com.lambert.fun.new_app.entity.PersonalColumn;
-import com.lambert.fun.new_app.service.PersonalColumnService;
+import com.lambert.fun.new_app.entity.Media;
+import com.lambert.fun.new_app.service.MediaService;
 import com.lambert.fun.new_app.util.Result;
 import com.lambert.fun.new_app.util.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,40 +9,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api.personalColumn")
-public class PersonalColumnController {
-    @Autowired
-    PersonalColumnService personalColumnService;
+@RequestMapping("api.media")
+public class MediaController {
     private Object msg = new Object();
 
+    @Autowired
+    MediaService mediaService;
+
     /*
-     * 查找 通过专栏id
+     * 查找
      * @Params Long id
      * */
     @GetMapping("get/id/{id}")
-    ResponseEntity<Map> getPersonalColumnById(@PathVariable("id") Long id) {
+    ResponseEntity<Map> getMediaById(@PathVariable("id") Long id) {
         try {
-            msg = personalColumnService.getPersonalColumnById(id);
-            return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
-        } catch (Exception e) {
-            System.out.println("error: " + e);
-            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
-        }
-    }
-
-    /*
-     * 查找 通过专栏id
-     * @Params Long userId
-     * */
-    @GetMapping("get/userId/{userId}")
-    ResponseEntity<Map> getPersonalColumnByUserId(@PathVariable("userId") Long userId) {
-        try {
-            // TODO
-            // 完成通过用户 id 查询专栏信息
-//            msg = personalColumnService.getPersonalColumnById(userId);
+            msg = mediaService.getMediaById(id);
             return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
@@ -54,9 +39,9 @@ public class PersonalColumnController {
      * 查找全部
      * */
     @GetMapping("get/all")
-    ResponseEntity<Map> getPersonalColumnALl() {
+    ResponseEntity<Map> getMediaAll() {
         try {
-            msg = personalColumnService.getPersonalColumnAll();
+            msg = mediaService.getMediaAll();
             return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
@@ -69,9 +54,54 @@ public class PersonalColumnController {
      * @Params Long id
      * */
     @PostMapping("post")
-    ResponseEntity<Map> savePersonalColumn(@RequestBody PersonalColumn personalColumn) {
+    ResponseEntity<Map> saveMedia(@RequestBody Media media) {
         try {
-            msg = personalColumnService.newPersonalColumnSave(personalColumn);
+            msg = mediaService.newMediaSave(media);
+            return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+        }
+    }
+
+    /*
+     * 更新点赞加1
+     * @Params Long id
+     * */
+    @PostMapping("post/likeIt/add/id/{id}")
+    ResponseEntity<Map> addLikeIt(@PathVariable("id") Long id) {
+        try {
+            msg = mediaService.updateAddLikeIt(id);
+            return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+        }
+    }
+
+    /*
+     * 更新点赞减1
+     * @Params Long id
+     * */
+    @PostMapping("post/likeIt/sub/id/{id}")
+    ResponseEntity<Map> subLikeIt(@PathVariable("id") Long id) {
+        try {
+            msg = mediaService.updateSubLikeIt(id);
+            return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+        }
+    }
+
+    /*
+     * 获取点赞数
+     * @Params Long id
+     * */
+    @GetMapping("get/likeIt/id/{id}")
+    ResponseEntity<Map> getLikeIt(@PathVariable("id") Long id) {
+        try {
+            msg = mediaService.getLikeIt(id);
             return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
@@ -83,11 +113,12 @@ public class PersonalColumnController {
      * 删除
      * @Params Long id
      * */
-    @PreAuthorize("hasRole('user')")
+//    TODO
+    @PreAuthorize("hasAnyRole('user','admin')")
     @GetMapping("delete/id/{id}")
-    ResponseEntity<Map> deleteByIdPersonalColumn(@PathVariable("id") Long id) {
+    ResponseEntity<Map> deleteByIdMedia(@PathVariable("id") Long id) {
         try {
-            msg = personalColumnService.deletePersonalColumnById(id);
+            msg = mediaService.deleteMediaById(id);
             return ResponseEntity.ok(Result.ok(ResultCode.NO_CONTENT, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
@@ -99,13 +130,12 @@ public class PersonalColumnController {
      * 修改
      * @Params Long id
      * */
+//    TODO
     @PreAuthorize("hasAnyRole('user','admin')")
-//    TODO 修改用户权限
-//    @PreAuthorize("principal.id.equals(#personalColumn) or hasAnyRole('admin')")
     @PostMapping("patch")
-    ResponseEntity<Map> updatePersonalColumn(@RequestBody PersonalColumn personalColumn) {
+    ResponseEntity<Map> updateMedia(@RequestBody Media media) {
         try {
-            msg = personalColumnService.updatePersonalColumn(personalColumn);
+            msg = mediaService.updateMedia(media);
             return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);

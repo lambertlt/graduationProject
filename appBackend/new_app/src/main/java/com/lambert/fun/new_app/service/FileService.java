@@ -1,10 +1,24 @@
 package com.lambert.fun.new_app.service;
 
-import com.lambert.fun.new_app.entity.User;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface FileService {
-    Object uploadMedia(MultipartFile multipartFile, User user);
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
-    Object uploadImg();
+public interface FileService {
+    void init();
+
+    void uploadImage(String type, MultipartFile multipartFile);
+
+    void uploadMedia(MultipartFile multipartFile);
+
+    Object getFilePath(String type, Long id);
+
+    Resource load(String filename);
+
+    Stream<Path> load();
+
+    void clear();
+
 }

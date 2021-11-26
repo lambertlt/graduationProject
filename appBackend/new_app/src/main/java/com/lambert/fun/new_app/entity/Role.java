@@ -1,15 +1,19 @@
 package com.lambert.fun.new_app.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "t_role")
 @Table(name = "t_role")
 @Proxy(lazy = false)
-public class Role {
+public class Role implements Serializable {
+    private static final long serialVersionUID = 8288904189979200360L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     /*

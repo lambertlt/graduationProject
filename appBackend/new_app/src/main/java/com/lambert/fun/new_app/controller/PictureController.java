@@ -1,32 +1,32 @@
 package com.lambert.fun.new_app.controller;
 
-import com.lambert.fun.new_app.entity.Classify;
-import com.lambert.fun.new_app.entity.User;
-import com.lambert.fun.new_app.service.ClassifyService;
+import com.lambert.fun.new_app.entity.Picture;
+import com.lambert.fun.new_app.service.PictureService;
 import com.lambert.fun.new_app.util.Result;
 import com.lambert.fun.new_app.util.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("api.classify")
-public class ClassifyController {
+@RequestMapping("api.picture")
+public class PictureController {
+    private Object msg = new Object();
+
     @Autowired
-    ClassifyService classifyService;
+    PictureService pictureService;
 
     /*
      * 查找
      * @Params Long id
      * */
     @GetMapping("get/id/{id}")
-    ResponseEntity<Map> getClassifyById(@PathVariable("id") Long id) {
+    ResponseEntity<Map> getPictureById(@PathVariable("id") Long id) {
         try {
-            Object msg = classifyService.getClassifyById(id);
+            msg = pictureService.getPictureById(id);
             return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
@@ -38,25 +38,25 @@ public class ClassifyController {
      * 查找全部
      * */
     @GetMapping("get/all")
-    ResponseEntity<Map> getClassifyAll() {
-        Object msg = classifyService.getClassifyAll();
-        return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
+    ResponseEntity<Map> getPictureAll() {
+        try {
+            msg = pictureService.getPictureAll();
+            return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+        }
     }
 
     /*
      * 创建
-     * @Params String name
-     * @Params Date date
-     * @Params Array personalColumnIdList
+     * @Params Long id
      * */
     @PostMapping("post")
-    @PreAuthorize("hasAnyRole('admin')")
-    ResponseEntity<Map> saveClassify(@RequestBody Classify classify) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User nowUser = (User) principal;
-//        classify.setUser(nowUser);
+    @PreAuthorize("hasAnyRole('user','admin')")
+    ResponseEntity<Map> savePicture(@RequestBody Picture picture) {
         try {
-            Object msg = classifyService.newClassifySave(classify);
+            msg = pictureService.newPictureSave(picture);
             return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
@@ -68,11 +68,12 @@ public class ClassifyController {
      * 删除
      * @Params Long id
      * */
-    @PreAuthorize("hasAnyRole('admin')")
+    @PreAuthorize("hasAnyRole('user','admin')")
     @GetMapping("delete/id/{id}")
-    ResponseEntity<Map> deleteByIdClassify(@PathVariable("id") Long id) {
+    ResponseEntity<Map> deleteByIdPicture(@PathVariable("id") Long id) {
         try {
-            Object msg = classifyService.deleteClassifyById(id);
+            msg = pictureService.deletePictureById(id);
+            System.out.println("msg" + msg);
             return ResponseEntity.ok(Result.ok(ResultCode.NO_CONTENT, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
@@ -84,14 +85,11 @@ public class ClassifyController {
      * 修改
      * @Params Long id
      * */
-    @PreAuthorize("hasAnyRole('admin')")
+    @PreAuthorize("hasAnyRole('user','admin')")
     @PostMapping("patch")
-    ResponseEntity<Map> updateClassify(@RequestBody Classify classify) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User nowUser = (User) principal;
-//        classify.setUser(nowUser);
+    ResponseEntity<Map> updatePicture(@RequestBody Picture picture) {
         try {
-            Object msg = classifyService.updateClassify(classify);
+            msg = pictureService.updatePicture(picture);
             return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);

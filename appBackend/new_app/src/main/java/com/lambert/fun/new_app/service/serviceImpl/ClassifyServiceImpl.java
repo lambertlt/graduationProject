@@ -1,16 +1,16 @@
 package com.lambert.fun.new_app.service.serviceImpl;
 
 import com.lambert.fun.new_app.dao.ClassifyMapper;
+import com.lambert.fun.new_app.dao.ForeignDelete;
 import com.lambert.fun.new_app.dao.PersonalColumnMapper;
 import com.lambert.fun.new_app.entity.Classify;
-import com.lambert.fun.new_app.entity.PersonalColumn;
+import com.lambert.fun.new_app.entity.User;
 import com.lambert.fun.new_app.service.ClassifyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service("ClassifyServiceImpl")
@@ -23,14 +23,19 @@ public class ClassifyServiceImpl implements ClassifyService {
     @Autowired
     PersonalColumnMapper personalColumnMapper;
 
+    @Autowired
+    ForeignDelete foreignDelete;
+
     private Object msg;
-    private List<PersonalColumn> personalColumnList = null;
+
+    public void clearMap() {
+        map = new HashMap<>();
+    }
 
     public Classify fullObject(Classify classify) {
-        if (classify.getPersonalColumnIdList() != null && !classify.getPersonalColumnIdList().isEmpty()) {
-            personalColumnList = new ArrayList<>(personalColumnMapper.findAllById(classify.getPersonalColumnIdList()));
-            classify.setPersonalColumns(personalColumnList);
-        }
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User nowUser = (User) principal;
+        classify.setUser(nowUser);
         return classify;
     }
 
@@ -56,7 +61,10 @@ public class ClassifyServiceImpl implements ClassifyService {
 
     @Override
     public Object deleteClassifyById(Long id) {
+        clearMap();
         try {
+            foreignDelete.deletePersonalColumnClassifyByClassifyId(id);
+            foreignDelete.setClassifyUserIdByClassifyId(id);
             classifyMapper.deleteById(id);
             map.put("id", id);
         } catch (Exception e) {

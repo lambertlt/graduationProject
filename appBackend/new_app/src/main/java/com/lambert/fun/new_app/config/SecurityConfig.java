@@ -5,10 +5,8 @@ import com.lambert.fun.new_app.entity.User;
 import com.lambert.fun.new_app.service.serviceImpl.UserServiceImpl;
 import com.lambert.fun.new_app.util.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -39,6 +37,9 @@ import java.util.Date;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserServiceImpl userServiceImpl;
+
+    @Autowired
+    MyAccessDenied myAccessDenied;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -118,7 +119,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler((req, resp, authentication) -> {
                     resp.setContentType("application/json;charset=UTF-8");
                     PrintWriter out = resp.getWriter();
-//                    out.write("注销成功");
                     out.write(new ObjectMapper().writeValueAsString(Result.ok("注销成功")));
                     out.flush();
                     out.close();
@@ -130,12 +130,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint((req, resp, authException) -> {
                             resp.setContentType("application/json;charset=UTF-8");
                             PrintWriter out = resp.getWriter();
-//                            out.write("尚未登录，请先登录");
                             out.write(new ObjectMapper().writeValueAsString(Result.ok("尚未登录，请先登录")));
                             out.flush();
                             out.close();
                         }
                 );
+        http.exceptionHandling().accessDeniedHandler(myAccessDenied);
     }
 
     @Bean

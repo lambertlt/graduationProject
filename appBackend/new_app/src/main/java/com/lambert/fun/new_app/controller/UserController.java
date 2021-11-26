@@ -7,7 +7,6 @@ import com.lambert.fun.new_app.util.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -18,7 +17,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    private Object msg;
+    private Object msg = new Object();
 
     /*
      * 用户查找
@@ -35,7 +34,6 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
         }
-
     }
 
     /*
@@ -73,9 +71,9 @@ public class UserController {
      * 用户删除
      * @Params Long id
      * */
-    @PreAuthorize("hasRole('user')")
+    @PreAuthorize("principal.id.equals(#id) or hasAnyRole('admin')")
     @GetMapping("delete/id/{id}")
-    ResponseEntity<Map> deleteUser(@PathVariable("id") Long id, Authentication authentication) {
+    ResponseEntity<Map> deleteUser(@PathVariable("id") Long id) {
         try {
             msg = userService.deleteUser(id);
             return ResponseEntity.ok(Result.ok(ResultCode.NO_CONTENT, msg));
@@ -89,9 +87,9 @@ public class UserController {
      * @Params Long id
      * @Params String password
      * */
-    @PreAuthorize("hasRole('user')")
+    @PreAuthorize("principal.id.equals(#user.id) or hasAnyRole('admin')")
     @PostMapping("patch/password")
-    ResponseEntity<Map> updateUserPassword(@RequestBody User user, Authentication authentication) {
+    ResponseEntity<Map> updateUserPassword(@RequestBody User user) {
         if (user.getId() == null && user.getPassword() == null) {
             // 用户参数错误，没有id，或缺少要修改的内容
             return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
@@ -110,9 +108,9 @@ public class UserController {
      * @Params Long id
      * @Params Long power
      * */
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasAnyRole('admin')")
     @PostMapping("patch/power")
-    ResponseEntity<Map> updateUserPower(@RequestBody User user, Authentication authentication) {
+    ResponseEntity<Map> updateUserPower(@RequestBody User user) {
         if (user.getId() != null && user.getPower() != null) {
             // 参数不为空可以修改power
             msg = userService.updateUserPower(user);

@@ -1,19 +1,19 @@
 package com.lambert.fun.new_app.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity(name = "t_personal_column")
 @Table(name = "t_personal_column")
 @Proxy(lazy = false)
@@ -27,50 +27,54 @@ public class PersonalColumn implements Serializable {
     private String content; // 专栏内容
     private String img; // 专栏封面图 path
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date; // 时间 yyyy-mm-dd:hh-mm-ss
-
-    @Transient // 不映射该属性
-    private List<Long> mediaIdList; // 关联的媒体文件列表，用于接收前台的值
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "personalColumn")
-//    @JsonIgnoreProperties(value = "personalColumn")
-    @Fetch(FetchMode.SUBSELECT)
-    private List<Media> media; // 专栏内的音视频
+    private Date creatTime; // 时间 yyyy-mm-dd:hh-mm-ss
 
     @Transient
-    private List<Long> userIdList; // 关联创建者id，用于接收前台的值
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
-    @Fetch(FetchMode.SUBSELECT)
-    @JsonIgnoreProperties({"password",}) // 用于忽略某些字段
-    private List<User> user; // 创建者
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<Long> classifyIdList;
+    @JsonIgnoreProperties(value = {"personalColumnSet"})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.REFRESH})
+    @JoinTable(name = "t_personal_column_classify", joinColumns = @JoinColumn(name = "personal_column_id"), inverseJoinColumns = @JoinColumn(name = "classify_id"))
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Set<Classify> classifySet;
 
-    @Transient
-    private List<Long> classifyIdList; // 关联分类id，用于接收前台的值
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @Fetch(FetchMode.SUBSELECT)
-    @JsonIgnore
-    private List<Classify> classify; // 专栏所属分类（包括分类id、name）可以有多个
+    @JsonIgnoreProperties(value = {"password", "createTime", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "roles", "enabled", "authorities"})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private User user;
+
+    @JsonIgnoreProperties(value = {"personalColumn", "classify"})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "personalColumn")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Set<Picture> pictureSet;
+
+    @JsonIgnoreProperties(value = {"personalColumn"})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "personalColumn")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    // todo error: java.lang.ClassCastException: class java.util.ArrayList cannot be cast to class java.util.Set (java.util.ArrayList and java.util.Set are in module java.base of loader 'bootstrap')
+    private Set<Media> mediaSet;
 
     public PersonalColumn() {
     }
 
     @Override
     public String toString() {
-        // 清空联级对象关于自己的调用
-        classify.forEach(data -> {
-            data.setPersonalColumns(null);
-        });
+        mediaSet.forEach(data -> data.setPersonalColumn(null));
+        pictureSet.forEach((data -> data.setPersonalColumn(null)));
+        pictureSet.forEach((data -> data.setClassify(null)));
+        classifySet.forEach(data -> data.setPersonalColumnSet(null));
         return "PersonalColumn{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", img='" + img + '\'' +
-                ", date=" + date +
-                ", mediaIdList=" + mediaIdList +
-                ", media=" + media +
-                ", userIdList=" + userIdList +
-                ", user=" + user +
+                ", creatTime=" + creatTime +
                 ", classifyIdList=" + classifyIdList +
-                ", classify=" + classify +
+                ", classifySet=" + classifySet +
+                ", user=" + user +
+                ", pictureSet=" + pictureSet +
+                ", mediaSet=" + mediaSet +
                 '}';
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
  * @Date 2021/3/19 0019 10:30
  * @Version 1.0.1
  * @describe: 手动注入类的处理器
+ * @Descript: 用于在实体类调用 serviceImpl 获取数据
  */
 @Component
 public class BeanContext implements ApplicationContextAware {
