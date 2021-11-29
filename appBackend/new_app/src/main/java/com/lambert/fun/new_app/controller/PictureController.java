@@ -35,6 +35,52 @@ public class PictureController {
     }
 
     /*
+     * 查找
+     * @Params Long userId
+     * */
+    @GetMapping("get/userId/{userId}")
+    ResponseEntity<Map> getPictureByUserId(@PathVariable("userId") Long userId) {
+        try {
+            msg = pictureService.getPictureByUserId(userId);
+            return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+        }
+    }
+
+    /*
+     * 查找
+     * @Params String type
+     * */
+    @GetMapping("get/type/{type}")
+    ResponseEntity<Map> getPictureByType(@PathVariable("type") String type) {
+        try {
+            msg = pictureService.getPictureByType(type);
+            return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+        }
+    }
+
+    /*
+     * 查找
+     * @Params String type
+     * @Params Long userId
+     * */
+    @GetMapping("get/type/{type}/userId/{userId}")
+    ResponseEntity<Map> getPictureByTypeAndUserId(@PathVariable("type") String type, @PathVariable("userId") Long userId) {
+        try {
+            msg = pictureService.getPictureByTypeAndUserId(type, userId);
+            return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+        }
+    }
+
+    /*
      * 查找全部
      * */
     @GetMapping("get/all")

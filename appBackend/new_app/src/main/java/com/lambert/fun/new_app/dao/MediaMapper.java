@@ -6,10 +6,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 public interface MediaMapper extends JpaRepository<Media, Long> {
     @Query(value = "select u.likeIt from t_media u where u.id=:id")
     Object getLikeItNumber(Long id);
+
+    @Query(value = "select u from t_media u where u.user.id=:id")
+    List<Media> getMediaUserId(Long id);
 
     @Transactional
     @Modifying

@@ -97,9 +97,9 @@ public class FileServiceImpl implements FileService {
             Long likeIt = 0L;
             String type = multipartFile.getContentType();
             Long size = multipartFile.getSize();
-            Boolean isShow = true;
+            Integer state = 0;
             Date date = new Date();
-            Media media = new Media(-1L, likeIt, path, type, size, fileName, date, isShow);
+            Media media = new Media(-1L, likeIt, path, type, size, fileName, date, state, nowUser);
             mediaMapper.save(media);
         } catch (IOException e) {
             throw new RuntimeException("Could not store the file. Error:" + e.getMessage());

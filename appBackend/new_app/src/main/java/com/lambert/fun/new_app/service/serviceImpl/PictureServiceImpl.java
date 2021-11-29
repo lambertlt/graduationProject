@@ -6,6 +6,7 @@ import com.lambert.fun.new_app.entity.PersonalColumn;
 import com.lambert.fun.new_app.entity.Picture;
 import com.lambert.fun.new_app.entity.User;
 import com.lambert.fun.new_app.service.PictureService;
+import com.lambert.fun.new_app.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,24 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
+    public Object getPictureByUserId(Long id) {
+        msg = pictureMapper.getPictureByUserId(id);
+        return msg;
+    }
+
+    @Override
+    public Object getPictureByType(String type) {
+        msg = pictureMapper.getPictureByType(type);
+        return msg;
+    }
+
+    @Override
+    public Object getPictureByTypeAndUserId(String type, Long userId) {
+        msg = pictureMapper.getPictureByTypeAndUserId(type, userId);
+        return msg;
+    }
+
+    @Override
     public Object getPictureAll() {
         msg = pictureMapper.findAll();
         return msg;
@@ -76,6 +95,8 @@ public class PictureServiceImpl implements PictureService {
     public Object deletePictureById(Long id) {
         clearMap();
         foreignDelete.setPictureClassifyIdUserIdPersonalColumnIdByPictureId(id);
+        Picture picture = pictureMapper.getById(id);
+        msg = FileUtil.deleteFile(picture.getPath()); // 用于删除实体存在的文件
         pictureMapper.deleteById(id);
         map.put("id", id);
         return map;

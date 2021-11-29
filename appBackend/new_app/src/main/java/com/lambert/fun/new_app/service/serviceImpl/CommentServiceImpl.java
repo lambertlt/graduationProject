@@ -1,6 +1,7 @@
 package com.lambert.fun.new_app.service.serviceImpl;
 
 import com.lambert.fun.new_app.dao.CommentMapper;
+import com.lambert.fun.new_app.dao.ForeignDelete;
 import com.lambert.fun.new_app.dao.MediaMapper;
 import com.lambert.fun.new_app.dao.UserMapper;
 import com.lambert.fun.new_app.entity.Comment;
@@ -27,6 +28,9 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     MediaMapper mediaMapper;
 
+    @Autowired
+    ForeignDelete foreignDelete;
+
     public void clearMap() {
         map = new HashMap();
     }
@@ -35,9 +39,9 @@ public class CommentServiceImpl implements CommentService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User nowUser = (User) principal;
         comment.setUser(nowUser);
-        if (comment.getReplyUserId() != null && !comment.getReplyUserId().toString().trim().equals("")) {
-            comment.setReplyUser(userMapper.getById(comment.getReplyUserId()));
-        }
+//        if (comment.getReplyUserId() != null && !comment.getReplyUserId().toString().trim().equals("")) {
+//            comment.setReplyUser(userMapper.getById(comment.getReplyUserId()));
+//        }
         if (comment.getMediaId() != null && !comment.getMediaId().toString().trim().equals("")) {
             comment.setMedia(mediaMapper.getById(comment.getMediaId()));
         }
@@ -58,6 +62,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Object newCommentSave(Comment comment) {
         comment.setId(-1L);
+        comment.setLikeIt(0L);
         Comment newComment = fullObject(comment);
         msg = commentMapper.save(newComment);
         return msg;
@@ -65,7 +70,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Object deleteCommentById(Long id) {
-        return null;
+        clearMap();
+        foreignDelete.deleteCommentReplyByCommentId(id);
+        foreignDelete.deleteCommentByCommentId(id);
+        map.put("id", id);
+        return map;
     }
 
     @Override

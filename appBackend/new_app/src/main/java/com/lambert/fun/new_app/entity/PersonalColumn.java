@@ -27,7 +27,7 @@ public class PersonalColumn implements Serializable {
     private String content; // 专栏内容
     private String img; // 专栏封面图 path
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creatTime; // 时间 yyyy-mm-dd:hh-mm-ss
+    private Date createTime; // 时间 yyyy-mm-dd:hh-mm-ss
 
     @Transient
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,7 +38,7 @@ public class PersonalColumn implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<Classify> classifySet;
 
-    @JsonIgnoreProperties(value = {"password", "createTime", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "roles", "enabled", "authorities"})
+    @JsonIgnoreProperties(value = {"password", "createTime", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "roles", "enabled", "authorities","sex","age"})
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -52,7 +52,6 @@ public class PersonalColumn implements Serializable {
     @JsonIgnoreProperties(value = {"personalColumn"})
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "personalColumn")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    // todo error: java.lang.ClassCastException: class java.util.ArrayList cannot be cast to class java.util.Set (java.util.ArrayList and java.util.Set are in module java.base of loader 'bootstrap')
     private Set<Media> mediaSet;
 
     public PersonalColumn() {
@@ -69,7 +68,7 @@ public class PersonalColumn implements Serializable {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", img='" + img + '\'' +
-                ", creatTime=" + creatTime +
+                ", createTime=" + createTime +
                 ", classifyIdList=" + classifyIdList +
                 ", classifySet=" + classifySet +
                 ", user=" + user +

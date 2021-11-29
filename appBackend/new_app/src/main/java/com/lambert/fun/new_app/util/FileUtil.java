@@ -13,6 +13,20 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 
 public class FileUtil {
+    private static Object msg = new Object();
+
+    public static Object deleteFile(String path) {
+        try {
+            File file = new File(path);
+            file.delete();
+            msg = "删除 " + path + " 文件成功";
+        } catch (Exception e) {
+            msg = e;
+        }
+        return msg;
+    }
+
+    // 用于文件下载
     public static ResponseEntity<InputStreamResource> loadFile(String path) throws IOException {
 //        /Users/lambert/IdeaProjects/new_app/fileStorage/lambert/images/归处.png
         File file = new File(path);

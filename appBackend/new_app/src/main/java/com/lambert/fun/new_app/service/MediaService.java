@@ -5,6 +5,8 @@ import com.lambert.fun.new_app.entity.Media;
 public interface MediaService {
     Object getMediaById(Long id);
 
+    Object getMediaUserId(Long id);
+
     Object getMediaAll();
 
     Object getLikeIt(Long id);

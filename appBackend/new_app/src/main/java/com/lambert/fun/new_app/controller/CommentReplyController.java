@@ -1,7 +1,7 @@
 package com.lambert.fun.new_app.controller;
 
-import com.lambert.fun.new_app.entity.Comment;
-import com.lambert.fun.new_app.service.CommentService;
+import com.lambert.fun.new_app.entity.CommentReply;
+import com.lambert.fun.new_app.service.CommentReplyService;
 import com.lambert.fun.new_app.util.Result;
 import com.lambert.fun.new_app.util.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +12,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api.comment")
-// 评论不支持修改
-public class CommentController {
+@RequestMapping("api.commentReply")
+public class CommentReplyController {
     private Object msg = new Object();
 
     @Autowired
-    CommentService commentService;
+    CommentReplyService commentReplyService;
 
     /*
      * 查找
      * @Params Long id
      * */
     @GetMapping("get/id/{id}")
-    ResponseEntity<Map> getCommentById(@PathVariable("id") Long id) {
+    ResponseEntity<Map> getCommentReplyById(@PathVariable("id") Long id) {
         try {
-            msg = commentService.getCommentById(id);
+            msg = commentReplyService.getCommentReplyById(id);
             return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
@@ -39,9 +38,9 @@ public class CommentController {
      * 查找全部
      * */
     @GetMapping("get/all")
-    ResponseEntity<Map> getCommentAll() {
+    ResponseEntity<Map> getCommentReplyAll() {
         try {
-            msg = commentService.getCommentAll();
+            msg = commentReplyService.getCommentReplyAll();
             return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
@@ -55,13 +54,13 @@ public class CommentController {
      * */
     @PostMapping("post")
     @PreAuthorize("hasAnyRole('user','admin')")
-    ResponseEntity<Map> saveComment(@RequestBody Comment comment) {
+    ResponseEntity<Map> saveCommentReply(@RequestBody CommentReply commentReply) {
         try {
-            msg = commentService.newCommentSave(comment);
+            msg = commentReplyService.newCommentReplySave(commentReply);
             return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
-            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST, comment.toString()));
+            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
         }
     }
 
@@ -71,9 +70,9 @@ public class CommentController {
      * */
     @GetMapping("delete/id/{id}")
     @PreAuthorize("hasAnyRole('user','admin')")
-    ResponseEntity<Map> deleteByIdComment(@PathVariable("id") Long id) {
+    ResponseEntity<Map> deleteByCommentReplyId(@PathVariable("id") Long id) {
         try {
-            msg = commentService.deleteCommentById(id);
+            msg = commentReplyService.deleteCommentReplyById(id);
             return ResponseEntity.ok(Result.ok(ResultCode.NO_CONTENT, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);

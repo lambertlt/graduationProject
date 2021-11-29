@@ -64,10 +64,10 @@ class NewAppApplicationTests {
         adminList.add(Role.getAdmin());
         userList.add(Role.getUser());
         mediaList.add(Role.getMedia());
-        User lambert = User.getUser("lambert", new BCryptPasswordEncoder().encode("123456"), 1L, adminList);
-        User admin = User.getUser("admin", new BCryptPasswordEncoder().encode("123456"), 1L, adminList);
-        User liziheng = User.getUser("liziheng", new BCryptPasswordEncoder().encode("123456"), 1L, adminList);
-        User liulinboyi = User.getUser("liulinboyi", new BCryptPasswordEncoder().encode("123456"), 1L, adminList);
+        User lambert = User.getUser("lambert", new BCryptPasswordEncoder().encode("123456"), 1L, "男", 18L, adminList);
+        User admin = User.getUser("admin", new BCryptPasswordEncoder().encode("123456"), 1L, "男", 18L, adminList);
+        User liziheng = User.getUser("liziheng", new BCryptPasswordEncoder().encode("123456"), 1L, "男", 18L, adminList);
+        User liulinboyi = User.getUser("liulinboyi", new BCryptPasswordEncoder().encode("123456"), 1L, "男", 18L, adminList);
         userMapper.save(lambert);
         userMapper.save(admin);
         userMapper.save(liziheng);

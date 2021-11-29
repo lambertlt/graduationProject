@@ -1,12 +1,14 @@
 package com.lambert.fun.new_app.controller;
 
 import com.lambert.fun.new_app.entity.PersonalColumn;
+import com.lambert.fun.new_app.entity.User;
 import com.lambert.fun.new_app.service.PersonalColumnService;
 import com.lambert.fun.new_app.util.Result;
 import com.lambert.fun.new_app.util.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -40,9 +42,7 @@ public class PersonalColumnController {
     @GetMapping("get/userId/{userId}")
     ResponseEntity<Map> getPersonalColumnByUserId(@PathVariable("userId") Long userId) {
         try {
-            // TODO
-            // 完成通过用户 id 查询专栏信息
-//            msg = personalColumnService.getPersonalColumnById(userId);
+            msg = personalColumnService.getPersonalColumnByUserId(userId);
             return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
@@ -100,16 +100,22 @@ public class PersonalColumnController {
      * @Params Long id
      * */
     @PreAuthorize("hasAnyRole('user','admin')")
-//    TODO 修改用户权限
 //    @PreAuthorize("principal.id.equals(#personalColumn) or hasAnyRole('admin')")
     @PostMapping("patch")
     ResponseEntity<Map> updatePersonalColumn(@RequestBody PersonalColumn personalColumn) {
-        try {
-            msg = personalColumnService.updatePersonalColumn(personalColumn);
-            return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
-        } catch (Exception e) {
-            System.out.println("error: " + e);
-            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User nowUser = (User) principal;
+        PersonalColumn personalColumn1 = (PersonalColumn) personalColumnService.getPersonalColumnById(personalColumn.getId());
+        if (personalColumn1.getUser().getId() == nowUser.getId() || nowUser.getPower() == 1)
+            try {
+                msg = personalColumnService.updatePersonalColumn(personalColumn);
+                return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
+            } catch (Exception e) {
+                System.out.println("error: " + e);
+                return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+            }
+        else {
+            return ResponseEntity.ok(Result.no(ResultCode.UNAUTHORIZED));
         }
     }
 }

@@ -89,6 +89,12 @@ public class PersonalColumnServiceImpl implements PersonalColumnService {
     }
 
     @Override
+    public Object getPersonalColumnByUserId(Long id) {
+        msg = personalColumnMapper.getPersonalColumnByUserId(id);
+        return msg;
+    }
+
+    @Override
     public Object updatePersonalColumn(PersonalColumn personalColumn) {
         PersonalColumn newPersonalColumn = fullObject(personalColumn);
         msg = personalColumnMapper.save(newPersonalColumn);

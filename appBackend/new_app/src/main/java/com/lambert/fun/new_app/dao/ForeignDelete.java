@@ -1,12 +1,17 @@
 package com.lambert.fun.new_app.dao;
 
 import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
-@Mapper
 // 用于删除中间表数据
 public interface ForeignDelete {
+    // 通过评论id删除 对应数据
+    @Delete("delete from t_comment where id=#{id}")
+    void deleteCommentByCommentId(Long id);
+
+    @Delete("delete from t_comment_reply where comment_id=#{id}")
+    void deleteCommentReplyByCommentId(Long id);
+
     // 通过专栏id删除 中间表数据
     @Delete("delete from t_personal_column_classify where personal_column_id=#{id}")
     void deletePersonalColumnClassifyByPersonalColumnId(Long id);
@@ -32,6 +37,22 @@ public interface ForeignDelete {
     @Update("update t_picture set user_id=Null where user_id=#{id}")
     void setPictureUserIdByUserId(Long id);
 
+    // 通过用户id设置 专栏表用户外健为null
+    @Update("update t_personal_column set user_id=Null where user_id=#{id}")
+    void setPersonalColumnUserIdByUserId(Long id);
+
+    // 通过用户id设置 分类表用户外健为null
+    @Update("update t_classify set user_id=Null where user_id=#{id}")
+    void setClassifyUserIdByUserId(Long id);
+
+    // 通过用户id设置 评论表用户外健为null
+    @Update("update t_comment set user_id=Null where user_id=#{id}")
+    void setCommentUserIdByUserId(Long id);
+
+    // 通过用户id设置 媒体表用户外健为null
+    @Update("update t_media set user_id=Null where user_id=#{id}")
+    void setMediaUserIdByUserId(Long id);
+
     // 通过照片id设置 照片表分类、专栏及用户外健为null
     @Update("update t_picture set classify_id=Null,user_id=Null,personal_column_id=Null where id=#{id}")
     void setPictureClassifyIdUserIdPersonalColumnIdByPictureId(Long id);
@@ -45,4 +66,7 @@ public interface ForeignDelete {
 
     @Update("update t_picture set personal_column_id=Null where personal_column_id=#{id}")
     void setPicturePersonalColumnIdByPersonalColumnId(Long id);
+
+    @Update("update t_comment_reply set comment_id=Null,reply_user_id=Null,user_id=Null where id=#{id}")
+    void setCommentReplyCommentIdReplyUserIdUserIdByCommentReplyId(Long id);
 }

@@ -1,12 +1,15 @@
 package com.lambert.fun.new_app.controller;
 
+import com.lambert.fun.new_app.dao.MediaMapper;
 import com.lambert.fun.new_app.entity.Media;
+import com.lambert.fun.new_app.entity.User;
 import com.lambert.fun.new_app.service.MediaService;
 import com.lambert.fun.new_app.util.Result;
 import com.lambert.fun.new_app.util.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -28,6 +31,21 @@ public class MediaController {
     ResponseEntity<Map> getMediaById(@PathVariable("id") Long id) {
         try {
             msg = mediaService.getMediaById(id);
+            return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
+        } catch (Exception e) {
+            System.out.println("error: " + e);
+            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+        }
+    }
+
+    /*
+     * 查找
+     * @Params Long userId
+     * */
+    @GetMapping("get/userId/{userId}")
+    ResponseEntity<Map> getMediaByUserId(@PathVariable("userId") Long userId) {
+        try {
+            msg = mediaService.getMediaById(userId);
             return ResponseEntity.ok(Result.ok(ResultCode.OK, msg));
         } catch (Exception e) {
             System.out.println("error: " + e);
@@ -113,16 +131,22 @@ public class MediaController {
      * 删除
      * @Params Long id
      * */
-//    TODO
     @PreAuthorize("hasAnyRole('user','admin')")
     @GetMapping("delete/id/{id}")
     ResponseEntity<Map> deleteByIdMedia(@PathVariable("id") Long id) {
-        try {
-            msg = mediaService.deleteMediaById(id);
-            return ResponseEntity.ok(Result.ok(ResultCode.NO_CONTENT, msg));
-        } catch (Exception e) {
-            System.out.println("error: " + e);
-            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User nowUser = (User) principal;
+        Media media = (Media) mediaService.getMediaById(id);
+        if (media.getUser().getId() == nowUser.getId() || nowUser.getPower() == 1)
+            try {
+                msg = mediaService.deleteMediaById(id);
+                return ResponseEntity.ok(Result.ok(ResultCode.NO_CONTENT, msg));
+            } catch (Exception e) {
+                System.out.println("error: " + e);
+                return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+            }
+        else {
+            return ResponseEntity.ok(Result.no(ResultCode.UNAUTHORIZED));
         }
     }
 
@@ -130,16 +154,22 @@ public class MediaController {
      * 修改
      * @Params Long id
      * */
-//    TODO
     @PreAuthorize("hasAnyRole('user','admin')")
     @PostMapping("patch")
     ResponseEntity<Map> updateMedia(@RequestBody Media media) {
-        try {
-            msg = mediaService.updateMedia(media);
-            return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
-        } catch (Exception e) {
-            System.out.println("error: " + e);
-            return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User nowUser = (User) principal;
+        Media media1 = (Media) mediaService.getMediaById(media.getId());
+        if (media1.getUser().getId() == nowUser.getId() || nowUser.getPower() == 1)
+            try {
+                msg = mediaService.updateMedia(media);
+                return ResponseEntity.ok(Result.ok(ResultCode.CREATED, msg));
+            } catch (Exception e) {
+                System.out.println("error: " + e);
+                return ResponseEntity.ok(Result.no(ResultCode.INVALID_REQUEST));
+            }
+        else {
+            return ResponseEntity.ok(Result.no(ResultCode.UNAUTHORIZED));
         }
     }
 }

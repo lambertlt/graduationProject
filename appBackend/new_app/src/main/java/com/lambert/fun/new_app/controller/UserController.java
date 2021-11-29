@@ -82,6 +82,8 @@ public class UserController {
         }
     }
 
+    // todo 修改用户个人信息
+
     /*
      * 用户或管理员修改密码
      * @Params Long id

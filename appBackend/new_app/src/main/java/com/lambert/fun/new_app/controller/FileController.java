@@ -109,19 +109,17 @@ public class FileController {
      * path 需要为绝对路径
      * */
     @PreAuthorize("hasAnyRole('admin','user')")
-    @GetMapping("get/path/{path}")
-    public ResponseEntity<InputStreamResource> loadFileByPath(@PathVariable("path") String path) throws IOException {
-//      String path1 = "/Users/lambert/IdeaProjects/new_app/fileStorage/lambert/images/归处.png";
+    @GetMapping("get/loadFile")
+    public ResponseEntity<InputStreamResource> loadFileByPath(@RequestParam(value = "path") String path) throws IOException {
         return FileUtil.loadFile(path);
     }
 
     /*
      * 在线预览，通过文件地址
      * */
-    @GetMapping("get/online/path/{path}")
-    public void online(HttpServletRequest request, HttpServletResponse response, @PathVariable String path) throws IOException, ServletException {
-        String path1 = "/Users/lambert/IdeaProjects/new_app/fileStorage/lambert/images/归处.png";
-        Path filePath = Paths.get(path1);
+    @GetMapping("get/online")
+    public void online(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "path") String path) throws IOException, ServletException {
+        Path filePath = Paths.get(path);
         if (Files.exists(filePath)) {
             String mimeType = Files.probeContentType(filePath);
             if (!StringUtils.isEmpty(mimeType)) {

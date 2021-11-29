@@ -38,8 +38,10 @@ public class User implements UserDetails, Serializable {
     private String username; // 用户名
     private String password; // 密码
     private String avatar; // 用户头像地址
+    private String sex; // 性别
+    private Long age; // 年龄
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creatTime; // 时间
+    private Date createTime; // 时间
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
@@ -68,7 +70,7 @@ public class User implements UserDetails, Serializable {
     public User() {
     }
 
-    public User(Long id, Long power, String username, String password, String avatar, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, List<Role> roles, Date creatTime) {
+    public User(Long id, Long power, String username, String password, String avatar, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, String sex, Long age, List<Role> roles, Date createTime) {
         this.id = id;
         this.power = power;
         this.username = username;
@@ -78,12 +80,14 @@ public class User implements UserDetails, Serializable {
         this.accountNonLocked = accountNonLocked;
         this.credentialsNonExpired = credentialsNonExpired;
         this.enabled = enabled;
+        this.sex = sex;
+        this.age = age;
         this.roles = roles;
-        this.creatTime = creatTime;
+        this.createTime = createTime;
     }
 
-    public static User getUser(String username, String password, Long power, List<Role> roles) {
-        User user = new User(-1L, power, username, password, null, true, true, true, true, roles, new Date());
+    public static User getUser(String username, String password, Long power, String sex, Long age, List<Role> roles) {
+        User user = new User(-1L, power, username, password, null, true, true, true, true, sex, age, roles, new Date());
         return user;
     }
 
@@ -93,7 +97,7 @@ public class User implements UserDetails, Serializable {
         user.setCredentialsNonExpired(true);
         user.setAccountNonLocked(true);
         user.setAccountNonExpired(true);
-        user.setCreatTime(new Date());
+        user.setCreateTime(new Date());
         // 进行service调用
         RoleServiceImpl roleService = BeanContext.getApplicationContext().getBean(RoleServiceImpl.class);
         Role role = roleService.loadRoleById(id);
@@ -140,7 +144,9 @@ public class User implements UserDetails, Serializable {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", creatTime=" + creatTime +
+                ", sex='" + sex + '\'' +
+                ", age=" + age +
+                ", createTime=" + createTime +
                 ", accountNonExpired=" + accountNonExpired +
                 ", accountNonLocked=" + accountNonLocked +
                 ", credentialsNonExpired=" + credentialsNonExpired +

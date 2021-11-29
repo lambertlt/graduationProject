@@ -61,10 +61,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
         String username = user.getUsername();
         String password = new BCryptPasswordEncoder().encode(user.getPassword());
+        String sex = user.getSex();
+        Long age = user.getAge();
         Long power = 3L;
         List<Role> roles = new ArrayList<>();
         roles.add(Role.getUser());
-        User user1 = User.getUser(username, password, power, roles);
+        User user1 = User.getUser(username, password, power, sex, age, roles);
         User newUser = userMapper.save(user1);
         return newUser;
     }
@@ -75,6 +77,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         clearMap();
         foreignDelete.deleteUserRolesByUserId(id);
         foreignDelete.setPictureUserIdByUserId(id);
+        foreignDelete.setPersonalColumnUserIdByUserId(id);
+        foreignDelete.setClassifyUserIdByUserId(id);
+        foreignDelete.setCommentUserIdByUserId(id);
+        foreignDelete.setMediaUserIdByUserId(id);
         userMapper.deleteById(id);
         map.put("id", id);
         return map;

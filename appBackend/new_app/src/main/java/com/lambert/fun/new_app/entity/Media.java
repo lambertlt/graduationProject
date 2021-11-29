@@ -9,6 +9,7 @@ import org.hibernate.annotations.Proxy;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,7 +24,7 @@ public class Media implements Serializable {
     private String title; // 媒体文件的名称
     private String img; // 媒体文件的介绍图片
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creatTime; // 上传时间
+    private Date createTime; // 上传时间
 
     private Long likeIt; // 点赞，初始值为0
 
@@ -36,9 +37,14 @@ public class Media implements Serializable {
     private String type; // 媒体文件的类型
     private Long size; // 大小
     private String fileName; // 文件名称
-    private boolean isShow; // 媒体是否审核通过
+    private Integer state; // 媒体状态
 
-    @JsonIgnoreProperties(value = {"password", "createTime", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "roles", "enabled", "authorities"})
+    @JsonIgnoreProperties(value = {"media"})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST}, mappedBy = "media")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Set<Comment> commentSet;
+
+    @JsonIgnoreProperties(value = {"password", "createTime", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "roles", "enabled", "authorities", "sex", "age"})
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -49,15 +55,16 @@ public class Media implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private PersonalColumn personalColumn;
 
-    public Media(Long id, Long likeIt, String path, String type, Long size, String fileName, Date creatTime, boolean isShow) {
+    public Media(Long id, Long likeIt, String path, String type, Long size, String fileName, Date createTime, Integer state, User user) {
         this.id = id;
         this.likeIt = likeIt;
         this.path = path;
         this.type = type;
         this.size = size;
         this.fileName = fileName;
-        this.isShow = isShow;
-        this.creatTime = creatTime;
+        this.state = state;
+        this.createTime = createTime;
+        this.user = user;
     }
 
     public Media() {
@@ -67,17 +74,19 @@ public class Media implements Serializable {
 
     @Override
     public String toString() {
+        commentSet.forEach(data -> data.setMedia(null));
         return "Media{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", img='" + img + '\'' +
-                ", creatTime=" + creatTime +
+                ", createTime=" + createTime +
                 ", likeIt=" + likeIt +
                 ", path='" + path + '\'' +
                 ", type='" + type + '\'' +
                 ", size=" + size +
                 ", fileName='" + fileName + '\'' +
-                ", isShow=" + isShow +
+                ", state=" + state +
+                ", commentSet=" + commentSet +
                 ", user=" + user +
                 ", personalColumn=" + personalColumn +
                 '}';

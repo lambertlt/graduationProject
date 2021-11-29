@@ -22,7 +22,7 @@ public class Classify implements Serializable {
     private Long id; // 分类id
     private String name; // 分类名
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creatTime; // 时间
+    private Date createTime; // 时间
 
     @JsonIgnoreProperties(value = {"classifySet"})
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "classifySet")
@@ -34,7 +34,7 @@ public class Classify implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Set<Picture> pictureSet;
 
-    @JsonIgnoreProperties(value = {"password", "createTime", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "roles", "enabled", "authorities"})
+    @JsonIgnoreProperties(value = {"password", "createTime", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "roles", "enabled", "authorities","sex","age"})
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -51,7 +51,7 @@ public class Classify implements Serializable {
         return "Classify{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", creatTime=" + creatTime +
+                ", createTime=" + createTime +
                 ", personalColumnSet=" + personalColumnSet +
                 ", pictureSet=" + pictureSet +
                 ", user=" + user +

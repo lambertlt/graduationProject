@@ -22,12 +22,12 @@ public class Picture implements Serializable {
     private Long id;
     private String path; // 绝对路径
     @Temporal(TemporalType.TIMESTAMP)
-    private Date creatTime;
+    private Date createTime;
     private String type; // 文件类型
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties(value = {"password", "createTime", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "roles", "enabled", "authorities"})
+    @JsonIgnoreProperties(value = {"password", "createTime", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "roles", "enabled", "authorities","sex","age"})
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private User user;
 
@@ -49,10 +49,10 @@ public class Picture implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private PersonalColumn personalColumn;
 
-    public Picture(Long id, String path, Date creatTime, String type, User user) {
+    public Picture(Long id, String path, Date createTime, String type, User user) {
         this.id = id;
         this.path = path;
-        this.creatTime = creatTime;
+        this.createTime = createTime;
         this.type = type;
         this.user = user;
     }
@@ -73,7 +73,7 @@ public class Picture implements Serializable {
         return "Picture{" +
                 "id=" + id +
                 ", path='" + path + '\'' +
-                ", creatTime=" + creatTime +
+                ", createTime=" + createTime +
                 ", type='" + type + '\'' +
                 ", user=" + user +
                 ", classifyId=" + classifyId +

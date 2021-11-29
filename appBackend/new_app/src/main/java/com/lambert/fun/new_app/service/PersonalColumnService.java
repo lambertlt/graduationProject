@@ -11,5 +11,7 @@ public interface PersonalColumnService {
 
     Object deletePersonalColumnById(Long id);
 
+    Object getPersonalColumnByUserId(Long id);
+
     Object updatePersonalColumn(PersonalColumn personalColumn);
 }
